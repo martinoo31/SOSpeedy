@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.*;
-import modelAdmin.Admin;
+import controller.Admin;
 import java.util.*;
 
 public class Main extends Application {
