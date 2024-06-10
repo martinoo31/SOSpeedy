@@ -95,4 +95,9 @@ public class Admin {
 		}
     }
 
+	public void eliminaTurno(Turno turno) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

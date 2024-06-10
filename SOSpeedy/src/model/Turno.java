@@ -10,6 +10,8 @@ public class Turno {
     private LocalDateTime fineProgrammazione;
     private List<TurnoEccezioni> turnoEccezioni;
     private List<Periodo> periodo;
+    private Medico medico;
+    private Visita visita;
 
     public Turno() {
         this.idTurno = -1;
@@ -17,20 +19,24 @@ public class Turno {
         this.fineProgrammazione = null;
     }
 
-    public Turno(int idTurno, LocalDateTime inizioProgrammazione, LocalDateTime fineProgrammazione) {
+    public Turno(int idTurno, LocalDateTime inizioProgrammazione, LocalDateTime fineProgrammazione, Medico medico, Visita visita) {
         this.idTurno = idTurno;
         this.inizioProgrammazione = inizioProgrammazione;
         this.fineProgrammazione = fineProgrammazione;
         this.turnoEccezioni = new ArrayList<TurnoEccezioni>();
         this.periodo = new ArrayList<Periodo>();
+        this.medico = medico;
+        this.visita = visita;
     }
 
-    public Turno(int idTurno, LocalDateTime inizioProgrammazione, LocalDateTime fineProgrammazione, List<TurnoEccezioni> turnoEccezioni, List<Periodo> periodo) {
+    public Turno(int idTurno, LocalDateTime inizioProgrammazione, LocalDateTime fineProgrammazione, List<TurnoEccezioni> turnoEccezioni, List<Periodo> periodo, Medico medico, Visita visita) {
         this.idTurno = idTurno;
         this.inizioProgrammazione = inizioProgrammazione;
         this.fineProgrammazione = fineProgrammazione;
         this.turnoEccezioni = turnoEccezioni;
         this.periodo = periodo;
+        this.medico = medico;
+        this.visita = visita;
     }
 
     
@@ -63,7 +69,15 @@ public class Turno {
         return turnoEccezioni;
     }
 
-    public void setTurnoEccezioni(List<TurnoEccezioni> turnoEccezioni) {
+    public Visita getVisita() {
+		return visita;
+	}
+
+	public void setVisita(Visita visita) {
+		this.visita = visita;
+	}
+
+	public void setTurnoEccezioni(List<TurnoEccezioni> turnoEccezioni) {
         this.turnoEccezioni = turnoEccezioni;
     }
 
@@ -87,7 +101,15 @@ public class Turno {
         this.periodo.add(periodo);
     }
 
-    public void removePeriodo(Periodo periodo) {
+    public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
+	}
+
+	public void removePeriodo(Periodo periodo) {
         this.periodo.remove(periodo);
     }
 

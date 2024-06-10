@@ -44,6 +44,11 @@ public class  Home {
             
             stage.setScene(scenes.get("gestioneVisite"));
         });
+        
+        gestioneTurniButton.setOnAction(event -> {
+        	Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        	stage.setScene(scenes.get("gestioneTurni"));
+        });
 
         root.getChildren().addAll(gestioneVisiteButton, gestioneTurniButton, logButton);
         return root;
