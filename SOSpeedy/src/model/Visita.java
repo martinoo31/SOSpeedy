@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.TreeSet;
 
-public class Visita {
+public class Visita implements Serializable{
     private int idVisita;
     private String nomeVisita;
     private TreeSet<Paziente> coda;
@@ -18,6 +19,12 @@ public class Visita {
         this.idVisita = idVisita;
         this.nomeVisita = nomeVisita;
         this.coda = coda;
+    }
+    
+    public Visita(String nomeVisita) {
+    	this.idVisita = 100;
+    	this.nomeVisita = nomeVisita;
+    	this.coda = new TreeSet<Paziente>();
     }
 
     // Getters and Setters

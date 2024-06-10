@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Paziente implements Comparable{
+public class Paziente implements Comparable, Serializable{
     private int idPaziente;
     private String codiceIdentificativo;
     private CodiceColore codiceColore;

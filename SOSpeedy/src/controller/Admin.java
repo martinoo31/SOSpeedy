@@ -2,6 +2,10 @@ package controller;
 
 
 import java.util.*;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -12,32 +16,83 @@ public class Admin {
     public List<Medico> medici;
     public List<Visita> visite;
     public List<Turno> turni;
+    
+    public ObservableList<Medico> oMedici;
+    public ObservableList<Visita> oVisite;
+    public ObservableList<Turno> oTurni;
 
     public Admin() {
+    	try {
+    		ObjectInputStream visiteStream = new ObjectInputStream(new FileInputStream("visite.bin"));
+    		 visite = (List<Visita>) visiteStream.readObject();
+    		 visiteStream.close();
+    	}catch(Exception e) {
+    		visite = new ArrayList<>();
+    	}
+    	
         try {
             ObjectInputStream mediciStream = new ObjectInputStream(new FileInputStream("medici.bin"));
-            ObjectInputStream visiteStream = new ObjectInputStream(new FileInputStream("visite.bin"));
+            
             ObjectInputStream turniStream = new ObjectInputStream(new FileInputStream("turni.bin"));
 
             medici = (List<Medico>) mediciStream.readObject();
-            visite = (List<Visita>) visiteStream.readObject();
+           
             turni = (List<Turno>) turniStream.readObject();
 
             mediciStream.close();
-            visiteStream.close();
+            
             turniStream.close();
         } catch (Exception e) {
-            medici = new ArrayList<>();
-            visite = new ArrayList<>();
+            medici = new ArrayList<>();          
             turni = new ArrayList<>();
+//            Visita visita1 = new Visita(1, "Consulto Cardiologico",new TreeSet<Paziente>());
+//            Visita visita2 = new Visita(2, "Consulto Oculistico",new TreeSet<Paziente>());
+//            Visita visita3 = new Visita(3, "Consulto Ortopedico",new TreeSet<Paziente>());
+//            visite.add(visita1);
+//            visite.add(visita2);
+//            visite.add(visita3);
         }
-        System.out.println("MOC");  
-            Visita visita1 = new Visita(1, "Consulto Cardiologico",new TreeSet<Paziente>());
-            Visita visita2 = new Visita(2, "Consulto Oculistico",new TreeSet<Paziente>());
-            Visita visita3 = new Visita(3, "Consulto Ortopedico",new TreeSet<Paziente>());
-    visite.add(visita1);
-            visite.add(visita2);
-            visite.add(visita3);
+        this.oMedici =  FXCollections.observableList(medici);
+        this.oTurni = FXCollections.observableList(turni);
+        this.oVisite = FXCollections.observableList(visite);
+        
+            
         }
+    
+    public void add(Visita v) {
+    	//this.visite.add(v);
+    	this.oVisite.add(v);
+    	try (ObjectOutputStream visiteStream = new ObjectOutputStream(new FileOutputStream("visite.bin"))) {
+    		visiteStream.writeObject(this.visite);
+    		System.out.println("Salvataggio aggiunta in corso");
+    		visiteStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public void eliminaVisita(Visita v) {
+    	this.oVisite.remove(v);
+    	try (ObjectOutputStream visiteStream = new ObjectOutputStream(new FileOutputStream("visite.bin"))) {
+    		visiteStream.writeObject(this.visite);
+    		System.out.println("Salvataggio eliminazione in corso");
+    		visiteStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void modificaVisita(Visita v) {
+    	this.oVisite.remove(v);
+    	this.oVisite.add(v);
+    	try (ObjectOutputStream visiteStream = new ObjectOutputStream(new FileOutputStream("visite.bin"))) {
+    		visiteStream.writeObject(this.visite);
+    		System.out.println("Salvataggio eliminazione in corso");
+    		visiteStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 
 }

@@ -18,8 +18,10 @@ public class Main extends Application {
         Map<String,Scene> scenes = new HashMap<String,Scene>();
         Home home = new Home(admin, scenes);
         scenes.put("home", new Scene(home.createContent(), 400, 300));
-        GestioneVisite gestioneVisite = new GestioneVisite(admin,scenes);
+        GestioneVisite gestioneVisite = new GestioneVisite(admin,scenes,primaryStage);
         scenes.put("gestioneVisite", new Scene(gestioneVisite.createContent(), 400, 300));
+        AggiungiVisita aggVisita = new AggiungiVisita(admin,scenes);
+        scenes.put("aggiungiVisite", new Scene(aggVisita.createContent(),400,300));
 
 
         primaryStage.setTitle("Admin");

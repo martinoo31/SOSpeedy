@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class PazienteInCoda extends Paziente {
+public class PazienteInCoda extends Paziente implements Serializable{
     private LocalDateTime inizioAttesa;
 
     public PazienteInCoda(int idPaziente, 
