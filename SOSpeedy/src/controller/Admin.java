@@ -31,27 +31,30 @@ public class Admin {
     	}
     	
     	try {
-    		ObjectInputStream turniStream = new ObjectInputStream(new FileInputStream("turni.bin"));
-    		 visite = (List<Visita>) turniStream.readObject();
-    		 turniStream.close();
-    	}catch(Exception e) {
-    		turni = new ArrayList<>();
-    	}
-    	
-        try {
             ObjectInputStream mediciStream = new ObjectInputStream(new FileInputStream("medici.bin"));
             medici = (List<Medico>) mediciStream.readObject();
             mediciStream.close();
         } catch (Exception e) {
             medici = new ArrayList<>();          
-            turni = new ArrayList<>();
-//            Visita visita1 = new Visita(1, "Consulto Cardiologico",new TreeSet<Paziente>());
-//            Visita visita2 = new Visita(2, "Consulto Oculistico",new TreeSet<Paziente>());
-//            Visita visita3 = new Visita(3, "Consulto Ortopedico",new TreeSet<Paziente>());
-//            visite.add(visita1);
-//            visite.add(visita2);
-//            visite.add(visita3);
+            Medico medico1 = new Medico(1,"Martino","Manaresi");
+            Medico medico2 = new Medico(2,"Francesco","Giordani");
+            medici.add(medico1);
+            medici.add(medico2);
         }
+    	
+    	try {
+    		ObjectInputStream turniStream = new ObjectInputStream(new FileInputStream("turni.bin"));
+    		 visite = (List<Visita>) turniStream.readObject();
+    		 turniStream.close();
+    	}catch(Exception e) {
+    		turni = new ArrayList<>();    		
+    		Turno turno1 = new Turno(1,LocalDateTime.of(2024, 6, 1, 10, 0),LocalDateTime.of(2024, 6, 1, 10, 0),this.medici.get(0),this.visite.get(0));
+    		Turno turno2 = new Turno(2,LocalDateTime.of(2024, 6, 1, 10, 0),LocalDateTime.of(2024, 6, 1, 10, 0),this.medici.get(1),this.visite.get(1));
+        	turni.add(turno1);
+        	turni.add(turno2);
+    	}
+    	
+        
         this.oMedici =  FXCollections.observableList(medici);
         this.oTurni = FXCollections.observableList(turni);
         this.oVisite = FXCollections.observableList(visite);
