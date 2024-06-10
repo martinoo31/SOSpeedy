@@ -30,18 +30,18 @@ public class Admin {
     		visite = new ArrayList<>();
     	}
     	
+    	try {
+    		ObjectInputStream turniStream = new ObjectInputStream(new FileInputStream("turni.bin"));
+    		 visite = (List<Visita>) turniStream.readObject();
+    		 turniStream.close();
+    	}catch(Exception e) {
+    		turni = new ArrayList<>();
+    	}
+    	
         try {
             ObjectInputStream mediciStream = new ObjectInputStream(new FileInputStream("medici.bin"));
-            
-            ObjectInputStream turniStream = new ObjectInputStream(new FileInputStream("turni.bin"));
-
             medici = (List<Medico>) mediciStream.readObject();
-           
-            turni = (List<Turno>) turniStream.readObject();
-
             mediciStream.close();
-            
-            turniStream.close();
         } catch (Exception e) {
             medici = new ArrayList<>();          
             turni = new ArrayList<>();

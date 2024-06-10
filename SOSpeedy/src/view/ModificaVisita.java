@@ -28,48 +28,53 @@ public class ModificaVisita {
 
     public Parent createContent() {
         VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(15));
+        vbox.setAlignment(Pos.TOP_CENTER);
+        vbox.setPadding(new Insets(15, 15, 15, 15));
+        vbox.setSpacing(20);
 
         HBox topBox = new HBox();
-        Button backButton = new Button("Indietro");
+        topBox.setAlignment(Pos.CENTER_LEFT);
+        topBox.setSpacing(10);
+
+        Button backButton = new Button("←");
         backButton.setOnAction(this::goBack);
         Label titleLabel = new Label("Modifica Visita");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         topBox.getChildren().addAll(backButton, titleLabel);
-        topBox.setPadding(new Insets(10));
 
-        HBox visita = new HBox();
-        Label searchLabel = new Label("Nuovo Nome Visita:");
+        VBox visitaBox = new VBox();
+        visitaBox.setAlignment(Pos.CENTER);
+        visitaBox.setSpacing(10);
+
+        Label currentVisitaLabel = new Label("Visita: " + visita.getNomeVisita());
+        currentVisitaLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+        Label newVisitaLabel = new Label("Nuovo Nome Visita");
         searchField = new TextField();
-        visita.setPadding(new Insets(10));
-        visita.getChildren().addAll(searchLabel,searchField);
+        searchField.setStyle("-fx-pref-width: 200px; -fx-border-color: black; -fx-border-width: 1;");
 
-        Button aggiungi = new Button("Modifica Visita");
-        aggiungi.setOnAction(this::aggiungiVisita);
+        visitaBox.getChildren().addAll(currentVisitaLabel, newVisitaLabel, searchField);
 
-        VBox addButtonBox = new VBox();
-        addButtonBox.getChildren().addAll(visita, aggiungi);
-        addButtonBox.setSpacing(10);
-        addButtonBox.setPadding(new Insets(10));
+        Button modificaButton = new Button("Modifica Visita");
+        modificaButton.setStyle("-fx-background-color: #F0E68C;");
+        modificaButton.setOnAction(this::modificaVisita);
 
-        vbox.getChildren().addAll(topBox, addButtonBox);
+        vbox.getChildren().addAll(topBox, visitaBox, modificaButton);
+
         return vbox;
     }
 
-    private void aggiungiVisita(ActionEvent event) {
+    private void modificaVisita(ActionEvent event) {
         String nomeVisita = searchField.getText();
-        // Aggiungi la visita utilizzando il nome inserito nel campo di testo
         this.visita.setNomeVisita(nomeVisita);
         this.admin.modificaVisita(this.visita);
 
-        // Cambia la scena o effettua altre operazioni necessarie
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setScene(scenes.get("gestioneVisite"));
- 
     }
 
     private void goBack(ActionEvent event) {
-    	Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-    	stage.setScene(scenes.get("gestioneVisite"));
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.setScene(scenes.get("gestioneVisite"));
     }
 }
