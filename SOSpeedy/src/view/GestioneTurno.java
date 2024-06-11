@@ -92,16 +92,7 @@ public class GestioneTurno {
     }
 
     private void aggiungiTurno(ActionEvent event) {
-        String nomeMedico = medicoField.getText();
-        String nomeVisita = visitaField.getText();
-        String giornoSettimana = giornoSettimanaComboBox.getValue();
-        
-        // Implement the logic to add a new shift (Turno) using the input fields
-        // Example: admin.addTurno(new Turno(nomeMedico, nomeVisita, giornoSettimana));
-        
-        // Clear the input fields after adding the shift
-        medicoField.clear();
-        visitaField.clear();
-        giornoSettimanaComboBox.getSelectionModel().selectFirst();
+    	Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(new AggiungiTurno(this.admin,this.scenes).createContent(),400,300));
     }
 }

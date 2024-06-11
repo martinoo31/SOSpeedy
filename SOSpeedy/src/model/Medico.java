@@ -91,4 +91,9 @@ public class Medico {
                 Objects.equals(cognome, medico.cognome) &&
                 Objects.equals(turni, medico.turni);
     }
+    
+    @Override
+    public String toString() {
+    	return this.nome.charAt(0)+". "+this.cognome;
+    }
 }

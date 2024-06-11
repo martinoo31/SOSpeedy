@@ -67,4 +67,9 @@ public class Visita implements Serializable{
     public int hashCode() {
         return Objects.hash(idVisita, nomeVisita, coda);
     }
+    
+    @Override
+    public String toString() {
+    	return this.nomeVisita;
+    }
 }

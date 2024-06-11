@@ -25,7 +25,8 @@ public class Periodo {
         this.fine = null;
     }
 
-    public int getId() {
+
+	public int getId() {
         return idPeriodo;
     }
 

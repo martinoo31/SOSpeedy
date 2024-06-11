@@ -28,6 +28,10 @@ public class Admin {
     		 visiteStream.close();
     	}catch(Exception e) {
     		visite = new ArrayList<>();
+    		Visita visita = new Visita("temp1");
+    		Visita visita2 = new Visita("temp2");
+    		visite.add(visita);
+    		visite.add(visita2);
     	}
     	
     	try {

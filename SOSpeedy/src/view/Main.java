@@ -17,13 +17,13 @@ public class Main extends Application {
         Admin admin = new Admin();
         Map<String,Scene> scenes = new HashMap<String,Scene>();
         Home home = new Home(admin, scenes);
-        scenes.put("home", new Scene(home.createContent(), 400, 300));
+        scenes.put("home", new Scene(home.createContent()));
         GestioneVisite gestioneVisite = new GestioneVisite(admin,scenes,primaryStage);
-        scenes.put("gestioneVisite", new Scene(gestioneVisite.createContent(), 400, 300));
+        scenes.put("gestioneVisite", new Scene(gestioneVisite.createContent()));
         AggiungiVisita aggVisita = new AggiungiVisita(admin,scenes);
-        scenes.put("aggiungiVisite", new Scene(aggVisita.createContent(),400,300));
+        scenes.put("aggiungiVisite", new Scene(aggVisita.createContent()));
         GestioneTurno gestTurno = new GestioneTurno(admin,scenes,primaryStage);
-        scenes.put("gestioneTurni", new Scene(gestTurno.createContent(),400,300));
+        scenes.put("gestioneTurni", new Scene(gestTurno.createContent()));
 
 
         primaryStage.setTitle("Admin");
