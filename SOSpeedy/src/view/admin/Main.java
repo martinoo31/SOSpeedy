@@ -1,10 +1,11 @@
-package view;
+package view.admin;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.medico.Login;
 import javafx.geometry.*;
 import controller.Admin;
 import java.util.*;

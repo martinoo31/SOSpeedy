@@ -1,4 +1,4 @@
-package view;
+package view.admin;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

@@ -1,4 +1,4 @@
-package view;
+package view.admin;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
