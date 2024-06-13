@@ -36,13 +36,17 @@ public class DeregistraPaziente {
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(15, 15, 15, 15));
+        vbox.setSpacing(10);
 
         // Top section with back button and title
         HBox topBox = new HBox(10);
         topBox.setAlignment(Pos.CENTER_LEFT);
-        Button backButton = new Button("Indietro");
+        topBox.setSpacing(10);
+        
+        Button backButton = new Button("←");
         backButton.setOnAction(this::goBack);
         Label titleLabel = new Label("Deregistra Paziente");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         topBox.getChildren().addAll(backButton, titleLabel);
 
         // Search field

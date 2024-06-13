@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.CodiceColore;
 import controller.Infermiere;
+import javafx.scene.layout.*;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -35,39 +36,46 @@ public class RegistraPaziente {
 
     public Parent createContent() {
         VBox vbox = new VBox(10);
-        vbox.setAlignment(Pos.CENTER);
+        vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPadding(new Insets(15, 15, 15, 15));
 
         // Top section with back button and title
         HBox topBox = new HBox(10);
         topBox.setAlignment(Pos.CENTER_LEFT);
-        Button backButton = new Button("Indietro");
+
+        Button backButton = new Button("←");
         backButton.setOnAction(this::goBack);
         Label titleLabel = new Label("Registra Paziente");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
         topBox.getChildren().addAll(backButton, titleLabel);
 
         // Input fields
-        HBox inputBox1 = new HBox(10);
-        inputBox1.setAlignment(Pos.CENTER_LEFT);
+        GridPane inputGrid = new GridPane();
+        inputGrid.setHgap(10);
+        inputGrid.setVgap(10);
+
         nomeField = new TextField();
         nomeField.setPromptText("Nome");
         cognomeField = new TextField();
         cognomeField.setPromptText("Cognome");
-        inputBox1.getChildren().addAll(new Label("Nome:"), nomeField, new Label("Cognome:"), cognomeField);
-
-        HBox inputBox2 = new HBox(10);
-        inputBox2.setAlignment(Pos.CENTER_LEFT);
         dataNascitaPicker = new DatePicker();
         codiceFiscaleField = new TextField();
         codiceFiscaleField.setPromptText("Codice Fiscale");
-        inputBox2.getChildren().addAll(new Label("Data di nascita:"), dataNascitaPicker, new Label("Codice fiscale:"), codiceFiscaleField);
 
-        HBox coloreBox = new HBox(10);
+        // Row 1
+        inputGrid.addRow(0, new Label("Nome:"), nomeField, new Label("Cognome:"), cognomeField);
+
+        // Row 2
+        inputGrid.addRow(1, new Label("Data di nascita:"), dataNascitaPicker, new Label("Codice fiscale:"), codiceFiscaleField);
+
+        // ColoreBox
+        VBox coloreBox = new VBox(10);
         coloreBox.setAlignment(Pos.CENTER_LEFT);
 
         codiceColoreGroup = new ToggleGroup();
 
-        // Creazione dei pulsanti di opzione e dei relativi rettangoli colorati
+        // Creazione dei pulsanti di opzione
         RadioButton whiteButton = new RadioButton("bianco");
         RadioButton greenButton = new RadioButton("verde");
         RadioButton blueButton = new RadioButton("azzurro");
@@ -80,7 +88,7 @@ public class RegistraPaziente {
         yellowButton.setToggleGroup(codiceColoreGroup);
         redButton.setToggleGroup(codiceColoreGroup);
 
-        // Creazione dei rettangoli colorati
+     // Creazione dei rettangoli colorati
         Rectangle whiteRect = new Rectangle(15, 15, Color.WHITE);
         Rectangle greenRect = new Rectangle(15, 15, Color.GREEN);
         Rectangle blueRect = new Rectangle(15, 15, Color.BLUE);
@@ -88,34 +96,40 @@ public class RegistraPaziente {
         Rectangle redRect = new Rectangle(15, 15, Color.RED);
 
         // Creazione di HBox per ogni colore con pulsante e rettangolo
-        HBox whiteBox = new HBox(5, whiteButton, whiteRect);
-        HBox greenBox = new HBox(5, greenButton, greenRect);
-        HBox blueBox = new HBox(5, blueButton, blueRect);
-        HBox yellowBox = new HBox(5, yellowButton, yellowRect);
-        HBox redBox = new HBox(5, redButton, redRect);
+        HBox whiteBox = new HBox(5, whiteRect, whiteButton);
+        HBox greenBox = new HBox(5, greenRect, greenButton);
+        HBox blueBox = new HBox(5, blueRect, blueButton);
+        HBox yellowBox = new HBox(5, yellowRect, yellowButton);
+        HBox redBox = new HBox(5, redRect, redButton);
 
         // Aggiunta di tutti i box colorati al coloreBox
         coloreBox.getChildren().addAll(new Label("Codice Colore:"), whiteBox, greenBox, blueBox, yellowBox, redBox);
 
-        // Description field
-        HBox descrizioneBox = new HBox(10);
+        //aggiunta della descrizione
+        VBox descrizioneBox = new VBox(10);
         descrizioneBox.setAlignment(Pos.CENTER_LEFT);
         descrizioneArea = new TextArea();
         descrizioneArea.setPromptText("Descrizione");
-        descrizioneBox.getChildren().addAll(new Label("Descrizione:"), descrizioneArea);
+        VBox.setVgrow(descrizioneArea, Priority.ALWAYS);
+        Label descrizioneLabel = new Label("Descrizione:");
+        descrizioneBox.getChildren().addAll(descrizioneLabel, descrizioneArea);
 
         // Register button
         Button registraButton = new Button("Registra");
+        registraButton.setStyle("-fx-background-color: #8FBC8F;");
         registraButton.setOnAction(this::registraPaziente);
 
         // Label per mostrare il Codice Identificativo Paziente
         codiceIdentificativoLabel = new Label();
         codiceIdentificativoLabel.setStyle("-fx-font-weight: bold;");
 
-        vbox.getChildren().addAll(topBox, inputBox1, inputBox2, coloreBox, descrizioneBox, registraButton, codiceIdentificativoLabel);
+        // Aggiunta di tutti i componenti al VBox principale
+        vbox.getChildren().addAll(topBox, inputGrid, coloreBox, descrizioneBox, registraButton, codiceIdentificativoLabel);
+        VBox.setVgrow(vbox, Priority.ALWAYS);
 
         return vbox;
     }
+
 
     private void goBack(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

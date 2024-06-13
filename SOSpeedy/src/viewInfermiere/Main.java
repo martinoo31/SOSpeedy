@@ -16,13 +16,13 @@ public class Main extends Application {
         Map<String,Scene> scenes = new HashMap<String,Scene>();
         
     	Home home = new Home(infermiere, scenes);
-    	scenes.put("home", new Scene(home.createContent(), 400, 300));
+    	scenes.put("home", new Scene(home.createContent(), 800, 450));
    
     	RegistraPaziente regPaziente = new RegistraPaziente(infermiere,scenes);
-        scenes.put("registraPaziente", new Scene(regPaziente.createContent(),400,300));
+        scenes.put("registraPaziente", new Scene(regPaziente.createContent(),800,450));
  
         DeregistraPaziente deregistraPaziente = new DeregistraPaziente(infermiere,scenes);
-        scenes.put("deregistraPaziente", new Scene(deregistraPaziente.createContent(), 400, 300));
+        scenes.put("deregistraPaziente", new Scene(deregistraPaziente.createContent(), 800, 450));
    
         primaryStage.setTitle("Infermiere");
         primaryStage.setScene(scenes.get("home"));

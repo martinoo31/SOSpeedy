@@ -1,6 +1,5 @@
 package viewInfermiere;
 
-import controller.Admin;
 import controller.Infermiere;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -9,7 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import model.Paziente;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import model.CodiceColore;
 import model.PazienteInCoda;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -35,6 +37,9 @@ public class HBoxPazienteInCoda extends HBox {
         Label cognomeLabel = new Label(this.pazienteInCoda.getCognome());
         Label codiceLabel = new Label(this.pazienteInCoda.getCodiceIdentificativo());
 
+        Rectangle codiceRect = new Rectangle(15, 15, getColorFromCodiceColore(this.pazienteInCoda.getCodiceColore()));
+        codiceRect.setStrokeWidth(1.5);
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -43,7 +48,24 @@ public class HBoxPazienteInCoda extends HBox {
         this.setPadding(new Insets(10)); // Optional, to add padding around the HBox
         this.setSpacing(10); // Space between labels and button
 
-        this.getChildren().addAll(nomeLabel, cognomeLabel, codiceLabel, spacer, this.deregistra);
+        this.getChildren().addAll(nomeLabel, cognomeLabel, codiceRect, codiceLabel, spacer, this.deregistra);
+    }
+
+    private Color getColorFromCodiceColore(CodiceColore codiceColore) {
+        switch (codiceColore) {
+            case BIANCO:
+                return Color.WHITE;
+            case VERDE:
+                return Color.GREEN;
+            case AZZURRO:
+                return Color.BLUE;
+            case ARANCIONE:
+                return Color.ORANGE;
+            case ROSSO:
+                return Color.RED;
+            default:
+                return Color.WHITE; // Colore di default, puoi scegliere quello che preferisci
+        }
     }
 
     private void deregistra(ActionEvent event) {
