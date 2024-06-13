@@ -35,18 +35,19 @@ public class DeregistraPaziente {
     public Parent createContent() {
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(15, 15, 15, 15));
-        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(25, 25, 25, 25));
 
         // Top section with back button and title
         HBox topBox = new HBox(10);
         topBox.setAlignment(Pos.CENTER_LEFT);
-        topBox.setSpacing(10);
+        topBox.setPadding(new Insets(0,0,20,0));
         
         Button backButton = new Button("←");
+        backButton.setAlignment(Pos.CENTER_LEFT);
         backButton.setOnAction(this::goBack);
         Label titleLabel = new Label("Deregistra Paziente");
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         topBox.getChildren().addAll(backButton, titleLabel);
 
         // Search field
@@ -54,15 +55,21 @@ public class DeregistraPaziente {
         searchBox.setAlignment(Pos.CENTER_LEFT);
         searchField = new TextField();
         searchField.setPromptText("Ricerca paziente");
+        
         Button searchButton = new Button("🔍");
         searchButton.setOnAction(this::searchPaziente);
-        searchBox.getChildren().addAll(new Label("Ricerca paziente:"), searchField, searchButton);
+        Label l2=new Label("Ricerca paziente:");
+        l2.setStyle("-fx-font-weight: bold;");
+        searchBox.getChildren().addAll(l2, searchField, searchButton);
 
         // ListView for patients
         VBox pazientiBox = new VBox();
         initializeListView(pazientiBox);
-
-        vbox.getChildren().addAll(topBox, searchBox, new Label("Elenco dei pazienti:"), pazientiBox);
+        
+        Label l1=new Label("Elenco dei pazienti:");
+        l1.setPadding(new Insets(20,0,0,0));
+        l1.setStyle("-fx-font-weight: bold;");
+        vbox.getChildren().addAll(topBox, searchBox, l1, pazientiBox);
 
         return vbox;
     }

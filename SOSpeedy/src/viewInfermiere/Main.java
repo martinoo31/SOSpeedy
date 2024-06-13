@@ -19,7 +19,7 @@ public class Main extends Application {
     	scenes.put("home", new Scene(home.createContent(), 800, 450));
    
     	RegistraPaziente regPaziente = new RegistraPaziente(infermiere,scenes);
-        scenes.put("registraPaziente", new Scene(regPaziente.createContent(),800,450));
+        scenes.put("registraPaziente", new Scene(regPaziente.createContent(),800,500));
  
         DeregistraPaziente deregistraPaziente = new DeregistraPaziente(infermiere,scenes);
         scenes.put("deregistraPaziente", new Scene(deregistraPaziente.createContent(), 800, 450));

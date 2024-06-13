@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -39,6 +41,9 @@ public class HBoxPazienteInCoda extends HBox {
 
         Rectangle codiceRect = new Rectangle(15, 15, getColorFromCodiceColore(this.pazienteInCoda.getCodiceColore()));
         codiceRect.setStrokeWidth(1.5);
+        if(this.pazienteInCoda.getCodiceColore().equals(CodiceColore.BIANCO)) {
+        	codiceRect.setStroke(Color.LIGHTGRAY);        	
+        }
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -48,7 +53,27 @@ public class HBoxPazienteInCoda extends HBox {
         this.setPadding(new Insets(10)); // Optional, to add padding around the HBox
         this.setSpacing(10); // Space between labels and button
 
-        this.getChildren().addAll(nomeLabel, cognomeLabel, codiceRect, codiceLabel, spacer, this.deregistra);
+        GridPane inputGrid = new GridPane();
+        inputGrid.setHgap(20);
+        inputGrid.setVgap(10);
+        
+        int columnCount = 4; // Number of columns
+        double columnWidth12 = 150; // Fixed width for each column in pixels
+        double columnWidth34 = 50;
+        for (int i = 0; i < columnCount; i++) {
+        	if(i==0 || i==1) {
+        		ColumnConstraints column = new ColumnConstraints(columnWidth12);
+        		inputGrid.getColumnConstraints().add(column);        		
+        	}
+            else {
+            	ColumnConstraints column = new ColumnConstraints(columnWidth34);
+        		inputGrid.getColumnConstraints().add(column);
+            }
+        }
+
+        inputGrid.addRow(0, nomeLabel, cognomeLabel, codiceRect, codiceLabel );
+        
+        this.getChildren().addAll(inputGrid, spacer, this.deregistra);
     }
 
     private Color getColorFromCodiceColore(CodiceColore codiceColore) {

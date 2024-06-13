@@ -3,6 +3,8 @@ package viewInfermiere;
 import controller.Infermiere;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.*;
@@ -22,13 +24,20 @@ public class  Home {
         // Creazione dell'interfaccia Home
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER); // center the buttons
-        root.setPadding(new Insets(15,15,15,15));
+        root.setPadding(new Insets(25,25,25,25));
+        
+        HBox topBox = new HBox(10);
+        topBox.setAlignment(Pos.CENTER);
+        topBox.setPadding(new Insets(30));
+        Label titleLabel = new Label("Benvenuto Infermiere");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        topBox.getChildren().addAll(titleLabel);
 
         Button registraPazienteButton = new Button("Registra Paziente");
         Button deregistraPazienteButton = new Button("Deregistra Paziente");
 
-        registraPazienteButton.setMaxWidth(Double.MAX_VALUE); // make the button as wide as its parent
-        deregistraPazienteButton.setMaxWidth(Double.MAX_VALUE); // make the button as wide as its parent
+        registraPazienteButton.setMaxWidth(200); // make the button as wide as its parent
+        deregistraPazienteButton.setMaxWidth(200); // make the button as wide as its parent
 
         VBox.setMargin(registraPazienteButton, new Insets(10, 0, 10, 0)); // add margin to the button
         VBox.setMargin(deregistraPazienteButton, new Insets(10, 0, 10, 0)); // add margin to the button
@@ -45,7 +54,7 @@ public class  Home {
         	stage.setScene(scenes.get("deregistraPaziente"));
         });
         
-        root.getChildren().addAll(registraPazienteButton, deregistraPazienteButton);
+        root.getChildren().addAll(topBox,registraPazienteButton, deregistraPazienteButton);
         return root;
     }
 }

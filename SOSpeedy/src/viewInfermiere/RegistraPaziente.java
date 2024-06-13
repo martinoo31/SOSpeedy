@@ -37,16 +37,19 @@ public class RegistraPaziente {
     public Parent createContent() {
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.setPadding(new Insets(15, 15, 15, 15));
+        vbox.setPadding(new Insets(25, 25, 25, 25));
 
         // Top section with back button and title
         HBox topBox = new HBox(10);
         topBox.setAlignment(Pos.CENTER_LEFT);
+        topBox.setPadding(new Insets(0,0,20,0));
 
         Button backButton = new Button("←");
+        backButton.setAlignment(Pos.CENTER_LEFT);
         backButton.setOnAction(this::goBack);
         Label titleLabel = new Label("Registra Paziente");
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         topBox.getChildren().addAll(backButton, titleLabel);
 
@@ -64,10 +67,18 @@ public class RegistraPaziente {
         codiceFiscaleField.setPromptText("Codice Fiscale");
 
         // Row 1
-        inputGrid.addRow(0, new Label("Nome:"), nomeField, new Label("Cognome:"), cognomeField);
+        Label l1=new Label("Nome:");
+        l1.setStyle("-fx-font-weight: bold;");
+        Label l2=new Label("Cognome:");
+        l2.setStyle("-fx-font-weight: bold;");
+        inputGrid.addRow(0, l1, nomeField, l2, cognomeField);
 
         // Row 2
-        inputGrid.addRow(1, new Label("Data di nascita:"), dataNascitaPicker, new Label("Codice fiscale:"), codiceFiscaleField);
+        Label l3=new Label("Data di nascita:");
+        l3.setStyle("-fx-font-weight: bold;");
+        Label l4=new Label("Codice fiscale:");
+        l4.setStyle("-fx-font-weight: bold;");
+        inputGrid.addRow(1, l3, dataNascitaPicker, l4, codiceFiscaleField);
 
         // ColoreBox
         VBox coloreBox = new VBox(10);
@@ -103,7 +114,9 @@ public class RegistraPaziente {
         HBox redBox = new HBox(5, redRect, redButton);
 
         // Aggiunta di tutti i box colorati al coloreBox
-        coloreBox.getChildren().addAll(new Label("Codice Colore:"), whiteBox, greenBox, blueBox, yellowBox, redBox);
+        Label l5=new Label("Codice Colore:");
+        l5.setStyle("-fx-font-weight: bold;");
+        coloreBox.getChildren().addAll(l5, whiteBox, greenBox, blueBox, yellowBox, redBox);
 
         //aggiunta della descrizione
         VBox descrizioneBox = new VBox(10);
@@ -112,10 +125,12 @@ public class RegistraPaziente {
         descrizioneArea.setPromptText("Descrizione");
         VBox.setVgrow(descrizioneArea, Priority.ALWAYS);
         Label descrizioneLabel = new Label("Descrizione:");
+        descrizioneLabel.setStyle("-fx-font-weight: bold;");
         descrizioneBox.getChildren().addAll(descrizioneLabel, descrizioneArea);
 
         // Register button
         Button registraButton = new Button("Registra");
+        registraButton.setStyle("-fx-font-weight: bold;");
         registraButton.setStyle("-fx-background-color: #8FBC8F;");
         registraButton.setOnAction(this::registraPaziente);
 
