@@ -8,9 +8,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.CodiceColore;
 import controller.Infermiere;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 public class RegistraPaziente {
@@ -22,6 +26,7 @@ public class RegistraPaziente {
     private TextField codiceFiscaleField;
     private ToggleGroup codiceColoreGroup;
     private TextArea descrizioneArea;
+    private Label codiceIdentificativoLabel; // Label per il Codice Identificativo Paziente
 
     public RegistraPaziente(Infermiere infermiere, Map<String, Scene> scenes) {
         this.infermiere = infermiere;
@@ -59,18 +64,38 @@ public class RegistraPaziente {
 
         HBox coloreBox = new HBox(10);
         coloreBox.setAlignment(Pos.CENTER_LEFT);
+
         codiceColoreGroup = new ToggleGroup();
-        RadioButton whiteButton = new RadioButton();
-        RadioButton greenButton = new RadioButton();
-        RadioButton blueButton = new RadioButton();
-        RadioButton yellowButton = new RadioButton();
-        RadioButton redButton = new RadioButton();
+
+        // Creazione dei pulsanti di opzione e dei relativi rettangoli colorati
+        RadioButton whiteButton = new RadioButton("bianco");
+        RadioButton greenButton = new RadioButton("verde");
+        RadioButton blueButton = new RadioButton("azzurro");
+        RadioButton yellowButton = new RadioButton("arancione");
+        RadioButton redButton = new RadioButton("rosso");
+
         whiteButton.setToggleGroup(codiceColoreGroup);
         greenButton.setToggleGroup(codiceColoreGroup);
         blueButton.setToggleGroup(codiceColoreGroup);
         yellowButton.setToggleGroup(codiceColoreGroup);
         redButton.setToggleGroup(codiceColoreGroup);
-        coloreBox.getChildren().addAll(new Label("Codice Colore:"), whiteButton, greenButton, blueButton, yellowButton, redButton);
+
+        // Creazione dei rettangoli colorati
+        Rectangle whiteRect = new Rectangle(15, 15, Color.WHITE);
+        Rectangle greenRect = new Rectangle(15, 15, Color.GREEN);
+        Rectangle blueRect = new Rectangle(15, 15, Color.BLUE);
+        Rectangle yellowRect = new Rectangle(15, 15, Color.ORANGE);
+        Rectangle redRect = new Rectangle(15, 15, Color.RED);
+
+        // Creazione di HBox per ogni colore con pulsante e rettangolo
+        HBox whiteBox = new HBox(5, whiteButton, whiteRect);
+        HBox greenBox = new HBox(5, greenButton, greenRect);
+        HBox blueBox = new HBox(5, blueButton, blueRect);
+        HBox yellowBox = new HBox(5, yellowButton, yellowRect);
+        HBox redBox = new HBox(5, redButton, redRect);
+
+        // Aggiunta di tutti i box colorati al coloreBox
+        coloreBox.getChildren().addAll(new Label("Codice Colore:"), whiteBox, greenBox, blueBox, yellowBox, redBox);
 
         // Description field
         HBox descrizioneBox = new HBox(10);
@@ -83,7 +108,11 @@ public class RegistraPaziente {
         Button registraButton = new Button("Registra");
         registraButton.setOnAction(this::registraPaziente);
 
-        vbox.getChildren().addAll(topBox, inputBox1, inputBox2, coloreBox, descrizioneBox, registraButton);
+        // Label per mostrare il Codice Identificativo Paziente
+        codiceIdentificativoLabel = new Label();
+        codiceIdentificativoLabel.setStyle("-fx-font-weight: bold;");
+
+        vbox.getChildren().addAll(topBox, inputBox1, inputBox2, coloreBox, descrizioneBox, registraButton, codiceIdentificativoLabel);
 
         return vbox;
     }
@@ -96,13 +125,35 @@ public class RegistraPaziente {
     private void registraPaziente(javafx.event.ActionEvent event) {
         String nome = nomeField.getText();
         String cognome = cognomeField.getText();
-        String dataNascita = dataNascitaPicker.getValue().toString();
+        LocalDate dataNascita = dataNascitaPicker.getValue();
         String codiceFiscale = codiceFiscaleField.getText();
         String codiceColore = ((RadioButton) codiceColoreGroup.getSelectedToggle()).getText();
         String descrizione = descrizioneArea.getText();
+        
+        CodiceColore colore = null;
+        switch (codiceColore) {
+            case "bianco":
+                colore = CodiceColore.BIANCO;
+                break;
+            case "verde":
+                colore = CodiceColore.VERDE;
+                break;
+            case "azzurro":
+                colore = CodiceColore.AZZURRO;
+                break;
+            case "arancione":
+                colore = CodiceColore.ARANCIONE;
+                break;
+            case "rosso":
+                colore = CodiceColore.ROSSO;
+                break;
+        }
 
-        // Implement the logic to register the patient using the input fields
-        // Example: infermiere.registraPaziente(new Paziente(nome, cognome, dataNascita, codiceFiscale, codiceColore, descrizione));
+        // Registra il paziente e ottieni il Codice Identificativo Paziente
+        String codiceIdentificativo = infermiere.registraPaziente(nome, cognome, codiceFiscale, dataNascita, descrizione, colore);
+
+        // Mostra il Codice Identificativo Paziente nel label
+        codiceIdentificativoLabel.setText("Codice Identificativo Paziente: " + codiceIdentificativo);
 
         // Clear the input fields after registering the patient
         nomeField.clear();

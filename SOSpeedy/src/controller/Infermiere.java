@@ -88,8 +88,12 @@ public class Infermiere {
             
         }
     
-    public void registraPaziente(Paziente p) {
+    public String registraPaziente( String nome, String cognome, String codiceFiscale, 
+			LocalDate dataNascita, String descrizione, CodiceColore codiceColore) {
     	//this.visite.add(v);
+    	String id=this.generateIdentificativoPaziente();
+    	Paziente p= new Paziente(1,nome,cognome,codiceFiscale, id , 
+    			"indirizzo fittizio", dataNascita, descrizione, codiceColore);
     	this.oPazienti.add(p);
     	PazienteInCoda pInCoda=new PazienteInCoda(p, LocalDateTime.now());
     	this.oPazientiInCoda.add(pInCoda);
@@ -109,6 +113,7 @@ public class Infermiere {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    	return id;
     	
     }
     

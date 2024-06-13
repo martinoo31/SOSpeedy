@@ -1,6 +1,7 @@
 package viewInfermiere;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,9 +11,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.PazienteInCoda;
+import model.Visita;
+import view.HBoxVisita;
 import controller.Infermiere;
 import javafx.event.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DeregistraPaziente {
@@ -49,10 +55,10 @@ public class DeregistraPaziente {
         searchBox.getChildren().addAll(new Label("Ricerca paziente:"), searchField, searchButton);
 
         // ListView for patients
-        pazientiListView = new ListView<>();
-        populateListView();
+        VBox pazientiBox = new VBox();
+        initializeListView(pazientiBox);
 
-        vbox.getChildren().addAll(topBox, searchBox, new Label("Elenco dei pazienti:"), pazientiListView);
+        vbox.getChildren().addAll(topBox, searchBox, new Label("Elenco dei pazienti:"), pazientiBox);
 
         return vbox;
     }
@@ -80,6 +86,32 @@ public class DeregistraPaziente {
         pazienti.add(new PazienteItem("Martino", "Manaresi", "A131", "Tac", "yellow"));
         pazienti.add(new PazienteItem("Federico", "Hrvatin", "B408", "Lastra", "green"));
         pazientiListView.setItems(pazienti);
+    }
+    
+    private void initializeListView(VBox visitsBox) {
+        List<HBoxPazienteInCoda> list = new ArrayList<>();
+        for (PazienteInCoda p : infermiere.pazientiInCoda) {
+            list.add(new HBoxPazienteInCoda(p, this.infermiere, this.scenes));
+        }
+
+        ObservableList<HBoxPazienteInCoda> observableListVisite = FXCollections.observableList(list);
+        ListView<HBoxPazienteInCoda> listView = new ListView<>(observableListVisite);
+        visitsBox.getChildren().add(listView);
+
+        infermiere.oPazientiInCoda.addListener((ListChangeListener<PazienteInCoda>) c -> {
+            while (c.next()) {
+                if (c.wasAdded() || c.wasRemoved()) {
+                    updateListView(observableListVisite);
+                }
+            }
+        });
+    }
+
+    private void updateListView(ObservableList<HBoxPazienteInCoda> observableListVisite) {
+        observableListVisite.clear();
+        for (PazienteInCoda p : infermiere.pazientiInCoda) {
+            observableListVisite.add(new HBoxPazienteInCoda(p, this.infermiere, this.scenes));
+        }
     }
 
     public static class PazienteItem extends HBox {
