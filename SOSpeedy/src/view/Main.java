@@ -16,6 +16,8 @@ public class Main extends Application {
         // Creazione dell'interfaccia Home
         Admin admin = new Admin();
         Map<String,Scene> scenes = new HashMap<String,Scene>();
+        Login login = new Login(admin, scenes);
+        scenes.put("login", new Scene(login.createContent()));
         Home home = new Home(admin, scenes);
         scenes.put("home", new Scene(home.createContent()));
         GestioneVisite gestioneVisite = new GestioneVisite(admin,scenes,primaryStage);
@@ -27,7 +29,7 @@ public class Main extends Application {
 
 
         primaryStage.setTitle("Admin");
-        primaryStage.setScene(scenes.get("home"));
+        primaryStage.setScene(scenes.get("login"));
         primaryStage.show();
     }
 
