@@ -18,7 +18,7 @@ public class Main extends Application {
         Admin admin = new Admin();
         Map<String,Scene> scenes = new HashMap<String,Scene>();
         
-        Login login = new Login(admin, scenes);
+        Login login = new Login(scenes);
         scenes.put("login", new Scene(login.createContent()));
         
         Home home = new Home(admin, scenes);
