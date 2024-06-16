@@ -1,5 +1,7 @@
 package view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -14,6 +16,7 @@ import javafx.util.converter.LocalTimeStringConverter;
 import model.Periodo;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -24,7 +27,11 @@ public class ProgrammazioneSettimanale {
 	ComboBox<DayOfWeek> dayOfWeekComboBox;
 	VBox periodi;
 	List<Periodo> listaPeriodi;
-	CheckBox[] dayCheckBoxes;
+	DayBox[] dayCheckBoxes;
+	HBox dayCheckBoxBox;
+	Parent contenuto;
+	DatePicker startDateField;
+	DatePicker endDateField;	
 	
 	public ProgrammazioneSettimanale() {
 		this.ArraylistaTimeBox = (List<TimeBox>[])new List[7];
@@ -33,10 +40,15 @@ public class ProgrammazioneSettimanale {
 			this.ArraylistaTimeBox[i].add(new TimeBox());
 		}
 		this.listaPeriodi = new ArrayList<>();
+		creaParente();
 	}
 
     public Parent createContent() {
-        VBox vbox = new VBox();
+        return contenuto;
+    }
+    
+    private void creaParente() {
+    	VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPadding(new Insets(15, 15, 15, 15));
         vbox.setSpacing(20);
@@ -52,7 +64,14 @@ public class ProgrammazioneSettimanale {
         dayOfWeekComboBox = new ComboBox<>();
         dayOfWeekComboBox.setItems(FXCollections.observableArrayList(Arrays.asList(DayOfWeek.values())));
         dayOfWeekComboBox.setValue(DayOfWeek.MONDAY);
+        dayOfWeekComboBox.valueProperty().addListener(new ChangeListener<DayOfWeek>() {
 
+
+            @Override
+            public void changed(ObservableValue<? extends DayOfWeek> observable, DayOfWeek oldValue, DayOfWeek newValue) {                
+               cambiaVisualizzazionePeriodiGiorno(oldValue, newValue);
+            }
+        });
         HBox labelBox = new HBox();
         labelBox.setAlignment(Pos.CENTER);
         labelBox.setSpacing(10);
@@ -67,11 +86,12 @@ public class ProgrammazioneSettimanale {
         
         periodi = new VBox();
         periodi.getChildren().add(labelBox);
-        periodi.getChildren().add(this.ArraylistaTimeBox[this.dayOfWeekComboBox.getValue().getValue()].get(0));
+        periodi.getChildren().add(this.ArraylistaTimeBox[this.dayOfWeekComboBox.getValue().getValue()-1].get(0));
         
         Button saveButton = new Button("Salva Giornata");
         saveButton.setOnAction(this::saveDay);
         Button removeButton = new Button("Rimuovi Giornata");
+        removeButton.setOnAction(this::removeGiornata);
         Button addPeriodButton = new Button("Aggiungi Periodo");
         addPeriodButton.setOnAction(this::aggiungiPeriodo);
         
@@ -88,16 +108,16 @@ public class ProgrammazioneSettimanale {
         dateBox.setAlignment(Pos.CENTER);
         dateBox.setSpacing(10);
 
-        TextField startDateField = new TextField();
-        startDateField.setPromptText("25/05/2024");
+        startDateField = new DatePicker();
+        startDateField.setValue(LocalDate.now());
 
-        TextField endDateField = new TextField();
-        endDateField.setPromptText("25/09/2024");
+        endDateField = new DatePicker();
+        endDateField.setValue(LocalDate.now().plusDays(10));
 
         dateBox.getChildren().addAll(new Label("Data di Inizio:"), startDateField, new Label("Data di Fine:"), endDateField);
 
-        dayCheckBoxes = new CheckBox[7];
-        HBox dayCheckBoxBox = new HBox();
+        dayCheckBoxes = new DayBox[7];
+        dayCheckBoxBox = new HBox();
         dayCheckBoxBox.setAlignment(Pos.CENTER);
         dayCheckBoxBox.setSpacing(10);
         
@@ -105,23 +125,47 @@ public class ProgrammazioneSettimanale {
         progSettimanaleSotto.getChildren().addAll(dayCheckBoxBox,dateBox);
 
         for (int i = 0; i < 7; i++) {
-            dayCheckBoxes[i] = new CheckBox();
-            dayCheckBoxBox.getChildren().add(dayCheckBoxes[i]);
+        	String giorno = switch(i) {
+          case 0 ->  "L";
+          case 1 -> "Ma";
+          case 2 -> "Me";
+          case 3 -> "G";
+          case 4 -> "V";
+          case 5 -> "S";
+          case 6 -> "D";
+          default -> "L";
+          };
+            dayCheckBoxes[i] = new DayBox(giorno);
+            dayCheckBoxBox.getChildren().add(dayCheckBoxes[i]);      
         }
 
         vbox.getChildren().addAll(topBox, schedulingBox,progSettimanaleAlta , progSettimanaleSotto);
 
-        return vbox;
+        this.contenuto = vbox;
+    }
+    
+    private void removeGiornata(ActionEvent event) {
+    	System.out.println("Rimuovo Giornata");
+    	DayOfWeek tempDayOfWeek = this.dayOfWeekComboBox.getValue();
+    	this.periodi.getChildren().removeAll(this.ArraylistaTimeBox[tempDayOfWeek.getValue()-1]);
+        this.ArraylistaTimeBox[tempDayOfWeek.getValue()-1] = new ArrayList<>();
+        this.ArraylistaTimeBox[tempDayOfWeek.getValue()-1].add(new TimeBox());
+        this.periodi.getChildren().addAll( this.ArraylistaTimeBox[tempDayOfWeek.getValue()-1]);
+        
+    }
+    
+    private void cambiaVisualizzazionePeriodiGiorno(DayOfWeek oldValue, DayOfWeek newValue) {
+    	this.periodi.getChildren().removeAll(this.ArraylistaTimeBox[oldValue.getValue()-1]);
+    	this.periodi.getChildren().addAll(this.ArraylistaTimeBox[newValue.getValue()-1]);
     }
 
     private void saveDay(ActionEvent event) {
-        // Implementa la logica di salvataggio qui
         System.out.println("Giornata salvata!");
     }
     
     private void aggiungiPeriodo(ActionEvent event) {
     	var temp = new TimeBox();
-    	this.ArraylistaTimeBox[this.dayOfWeekComboBox.getValue().getValue()].add(temp);
+    	this.ArraylistaTimeBox[this.dayOfWeekComboBox.getValue().getValue()-1].add(temp);
     	periodi.getChildren().add(temp);
     }
     
@@ -133,8 +177,19 @@ public class ProgrammazioneSettimanale {
     		LocalTime fine = LocalTime.parse(t.getEndTime().getText());
     		this.listaPeriodi.add(new Periodo(10,tempDayOfWeek,inizio,fine));
     	}
+    	this.dayCheckBoxes[tempDayOfWeek.getValue()- 1].cambiaStato();
+    	this.dayCheckBoxBox.requestLayout();
     	
-    	
+    }
+    public List<Periodo> getListPeriodo(){
+    	return this.listaPeriodi;
+    }
+    
+    public LocalDate[] getEstremi() {
+    	LocalDate[] estremi = new LocalDate[2];
+    	estremi[0] = this.startDateField.getValue();
+    	estremi[1] = this.endDateField.getValue();
+    	return estremi;
     }
 
 }

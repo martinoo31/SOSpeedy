@@ -21,6 +21,7 @@ import controller.Admin;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 
 public class AggiungiTurno {
@@ -32,10 +33,14 @@ public class AggiungiTurno {
     public TextField endTimeField;
     public TextField startDateField;
     public TextField endDateField;
+    public HBox dateBox;
+    public ProgrammazioneSettimanale progSettimana;
+    public ProgrammazioneGiornaliera progGiornata;
 
     public AggiungiTurno(Admin admin, Map<String, Scene> scenes) {
         this.admin = admin;
         this.scenes = scenes;
+        this.progGiornata = new ProgrammazioneGiornaliera();
     }
 
     public Parent createContent() {
@@ -72,26 +77,27 @@ public class AggiungiTurno {
 
         Button weeklyButton = new Button("Programmazione Settimanale");
         weeklyButton.setStyle("-fx-background-color: #F0E68C;");
+        weeklyButton.setOnAction(this::cambiaProgSettimanale);
 
         Button dailyButton = new Button("Programmazione Giornaliera");
         dailyButton.setStyle("-fx-background-color: #F0E68C;");
+        dailyButton.setOnAction(this::cambiaProgGiornaliera);
 
         schedulingBox.getChildren().addAll(weeklyButton, dailyButton);
 
-        HBox dateBox = new HBox();
+        dateBox = new HBox();
         dateBox.setAlignment(Pos.CENTER);
         dateBox.setSpacing(10);
-        ProgrammazioneSettimanale progSettimana = new ProgrammazioneSettimanale();
+        progSettimana = new ProgrammazioneSettimanale();
         dateBox.getChildren().add(progSettimana.createContent());
 
-        Button saveButton = new Button("Salva");
+        Button saveButton = new Button("Salva Turno");
         saveButton.setOnAction(this::saveTurno);
-        Button removeButton = new Button("Rimuovi Giornata");
 
         HBox bottomBox = new HBox();
         bottomBox.setAlignment(Pos.CENTER);
         bottomBox.setSpacing(10);
-        bottomBox.getChildren().addAll(saveButton, removeButton);
+        bottomBox.getChildren().add(saveButton);
 
         vbox.getChildren().addAll(topBox, medicoLabel, medicoComboBox, visitaLabel, visitaComboBox, schedulingBox, new HBox(), dateBox, bottomBox);
 
@@ -99,20 +105,29 @@ public class AggiungiTurno {
     }
 
     private void saveTurno(ActionEvent event) {
-        Medico selectedMedico = medicoComboBox.getValue();
-        Visita selectedVisita = visitaComboBox.getValue();
-        LocalDateTime startDateTime = LocalDateTime.parse(startDateField.getText() + "T" + startTimeField.getText());
-        LocalDateTime endDateTime = LocalDateTime.parse(endDateField.getText() + "T" + endTimeField.getText());
-
-        Turno newTurno = new Turno(admin.turni.size() + 1, startDateTime, endDateTime, selectedMedico, selectedVisita);
-        admin.oTurni.add(newTurno);
-
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(scenes.get("gestioneTurni"));
+        	var listaPeriodi = this.progSettimana.getListPeriodo();
+        	var estremi = this.progSettimana.getEstremi();
+        	var eccezioni = this.progGiornata.getListEccezioni();
+        	Turno turnoDaAggiungere = new Turno (this.admin.turni.size()+1,LocalDateTime.of(estremi[0], LocalTime.of(0, 0)),
+        			LocalDateTime.of(estremi[1], LocalTime.MIDNIGHT),eccezioni,listaPeriodi,
+        			this.medicoComboBox.getValue(),this.visitaComboBox.getValue());
+        	this.admin.aggiungiTurno(turnoDaAggiungere);
     }
 
     private void goBack(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setScene(scenes.get("gestioneTurni"));
     }
+    
+    private void cambiaProgGiornaliera(ActionEvent event) {
+    	this.dateBox.getChildren().remove(this.progSettimana.createContent());
+    	this.dateBox.getChildren().add(this.progGiornata.createContent());
+    }
+    
+    private void cambiaProgSettimanale(ActionEvent event) {
+    	this.dateBox.getChildren().remove(this.progGiornata.createContent());
+    	this.dateBox.getChildren().add(this.progSettimana.createContent());
+    }
+    
+    
 }

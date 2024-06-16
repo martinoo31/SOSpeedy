@@ -93,6 +93,6 @@ public class GestioneTurno {
 
     private void aggiungiTurno(ActionEvent event) {
     	Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(new AggiungiTurno(this.admin,this.scenes).createContent(),400,300));
+        stage.setScene(new Scene(new AggiungiTurno(this.admin,this.scenes).createContent(),1200,900));
     }
 }

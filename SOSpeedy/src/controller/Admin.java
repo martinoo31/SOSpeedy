@@ -101,6 +101,17 @@ public class Admin {
 			e.printStackTrace();
 		}
     }
+    
+    public void aggiungiTurno (Turno turno) {
+    	this.oTurni.add(turno);
+    	try (ObjectOutputStream turnoStream = new ObjectOutputStream(new FileOutputStream("visite.bin"))) {
+    		turnoStream.writeObject(this.visite);
+    		System.out.println("Salvataggio tuno in corso");
+    		turnoStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 
 	public void eliminaTurno(Turno turno) {
 		// TODO Auto-generated method stub
