@@ -1,24 +1,32 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class PazienteInCoda extends Paziente implements Serializable{
     private LocalDateTime inizioAttesa;
 
-    public PazienteInCoda(int idPaziente, 
-                            String codiceIdentificativo, 
-                            CodiceColore codiceColore, 
-                            String nome, 
-                            String cognome, 
-                            String codiceFiscale, 
-                            LocalDateTime inizioAttesa) 
-        {
-        super(idPaziente, codiceIdentificativo, codiceColore, nome, cognome, codiceFiscale);
-        this.inizioAttesa = inizioAttesa;
-    }
     
-    public PazienteInCoda(){
+    
+    public PazienteInCoda(int idPaziente, String nome, String cognome, String codiceFiscale,
+			String codiceIdentificativo, String indirizzo, LocalDate dataNascita, String descrizione,
+			CodiceColore codiceColore, LocalDateTime inizioAttesa) {
+		super(idPaziente, nome, cognome, codiceFiscale, codiceIdentificativo, indirizzo, dataNascita, descrizione,
+				codiceColore);
+		this.inizioAttesa=inizioAttesa;
+		// TODO Auto-generated constructor stub
+	}
+    
+    public PazienteInCoda(Paziente p, LocalDateTime inizioAttesa) {
+		super(p.getIdPaziente(), p.getNome(), p.getCognome(), p.getCodiceFiscale(),
+				p.getCodiceIdentificativo(), p.getIndirizzo(), p.getDataNascita(), p.getDescrizione(),
+				p.getCodiceColore());
+		this.inizioAttesa=inizioAttesa;
+		// TODO Auto-generated constructor stub
+	}
+
+	public PazienteInCoda(){
         super();
         this.inizioAttesa = null;
     }

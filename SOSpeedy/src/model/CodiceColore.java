@@ -1,9 +1,19 @@
 package model;
 
 public enum CodiceColore {
-    ROSSO,
-    ARANCIONE,
-    AZZURRO,
-    VERDE,
-    BIANCO;
+    ROSSO(1),
+    ARANCIONE(2),
+    AZZURRO(3),
+    VERDE(4),
+    BIANCO(5);
+	
+	private final int priorita;
+	
+	CodiceColore(int priorita) {
+        this.priorita = priorita;
+    }
+
+    public int getPriorita() {
+        return priorita;
+    }
 }
