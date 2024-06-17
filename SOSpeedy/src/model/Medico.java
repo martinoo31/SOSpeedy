@@ -11,11 +11,14 @@ public class Medico {
     private String nome;
     private String cognome;
     private List<Turno> turni;
+    
+    private Paziente p = new Paziente();
 
     public Medico() {
         this.idMedico = -1;
         this.nome = "";
         this.cognome = "";
+        this.p = new Paziente();
     }
 
     public Medico(int idMedico, String nome, String cognome) {
@@ -23,6 +26,14 @@ public class Medico {
         this.nome = nome;
         this.cognome = cognome;
         this.turni = new ArrayList<Turno>();
+    }
+    
+    public void setPaziente(Paziente p) {
+    	this.p = p;
+    }
+    
+    public Paziente getPaziente() {
+    	return p;
     }
 
     public int getIdMedico() {

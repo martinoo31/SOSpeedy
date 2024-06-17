@@ -27,7 +27,16 @@ public class Paziente implements Comparable, Serializable{
 
     
 
-    public Paziente(int idPaziente, String nome, String cognome, String codiceFiscale, String codiceIdentificativo,
+    @Override
+	public String toString() {
+		return "Paziente [nome=" + nome + ", cognome=" + cognome + ", codiceFiscale=" + codiceFiscale
+				+ ", codiceIdentificativo=" + codiceIdentificativo + ", indirizzo=" + indirizzo + ", dataNascita="
+				+ dataNascita + ", descrizione=" + descrizione + ", codiceColore=" + codiceColore + "]";
+	}
+
+
+
+	public Paziente(int idPaziente, String nome, String cognome, String codiceFiscale, String codiceIdentificativo,
 			String indirizzo, LocalDate dataNascita, String descrizione, CodiceColore codiceColore) {
 		super();
 		this.idPaziente = idPaziente;

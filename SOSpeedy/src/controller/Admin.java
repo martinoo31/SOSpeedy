@@ -9,7 +9,10 @@ import javafx.collections.ObservableList;
 import java.io.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import model.*;
+import model.Medico;
+import model.Visita;
+import model.Turno;
+import model.TurnoEccezioni;
 
 public class Admin {
 
