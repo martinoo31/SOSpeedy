@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Paziente implements Comparable, Serializable{
@@ -203,6 +204,33 @@ public class Paziente implements Comparable, Serializable{
     public int compareTo(Object o) {
         Paziente p = (Paziente) o;
         return this.codiceColore.compareTo(p.codiceColore);
+    }
+	
+	@Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return String.format(
+                "  ID: %d\n" +
+                "  Nome: %s\n" +
+                "  Cognome: %s\n" +
+                "  Codice Fiscale: %s\n" +
+                "  Codice Identificativo: %s\n" +
+                "  Indirizzo: %s\n" +
+                "  Data di Nascita: %s\n" +
+                "  Descrizione: %s\n" +
+                "  Codice Colore: %s\n" +
+                "  Visita: %s\n",
+                idPaziente,
+                nome,
+                cognome,
+                codiceFiscale,
+                codiceIdentificativo,
+                indirizzo,
+                dataNascita != null ? dataNascita.format(formatter) : "N/A",
+                descrizione != null ? descrizione : "N/A",
+                codiceColore != null ? codiceColore: "N/A",
+                visita != null ? visita : "N/A"
+        );
     }
 }
 

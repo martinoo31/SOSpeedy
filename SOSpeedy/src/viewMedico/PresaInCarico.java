@@ -11,12 +11,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.CodiceColore;
+import model.Paziente;
 import model.PazienteInCoda;
 import model.Visita;
 //import view.HBoxVisita;
 import controller.Medico;
 import javafx.event.*;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +32,50 @@ public class PresaInCarico {
     private Map<String, Scene> scenes;
     private Stage stage;
     private ListView<PazienteItem> pazientiListView;
+    private List<Paziente> pazienti;
+    private List<PazienteInCoda> pazientiInCoda;
 
     public PresaInCarico(Map<String, Scene> scenes, Stage stage) {
         this.medico = new Medico();
         this.scenes = scenes;
         this.stage = stage;
+        
+        Paziente paziente1 = new Paziente(1,"Federico",
+    			"Hrvatin","HRVFRC02R19A944W", 
+    			this.medico.generateIdentificativoPaziente(), "Via Marzocchi 16, Caselecchio",
+    			LocalDate.of(2002, 9, 3), "Frattura del polso evidente",
+    			CodiceColore.VERDE);
+    	Paziente paziente2 = new Paziente(2,"Francesco",
+    			"Giordani","GRDFNC02P03A944J", 
+    			this.medico.generateIdentificativoPaziente(), "Via Saragozza 135, Bologna",
+    			LocalDate.of(2002, 9, 3), "Strana aritmia",
+    			CodiceColore.AZZURRO);
+    	
+    	PazienteInCoda pazienteInCoda1= new PazienteInCoda(paziente1, LocalDateTime.of(2024, 06, 19, 8, 45) );
+    	PazienteInCoda pazienteInCoda2= new PazienteInCoda(paziente2, LocalDateTime.of(2024, 06, 19, 8, 55) );
+    	
+		try {
+            ObjectInputStream pazientiStream = new ObjectInputStream(new FileInputStream("pazienti.bin"));
+            pazienti = (List<Paziente>) pazientiStream.readObject();
+            pazientiStream.close();
+        } catch (Exception e) {
+            pazienti = new ArrayList<>();          
+            pazienti.add(paziente1);
+            pazienti.add(paziente2);
+        }
+    	
+		try {
+            ObjectInputStream pazientiInCodaStream = new ObjectInputStream(new FileInputStream("pazientiInCoda.bin"));
+            pazientiInCoda = (List<PazienteInCoda>) pazientiInCodaStream.readObject();
+            pazientiInCodaStream.close();
+        } catch (Exception e) {
+            pazientiInCoda = new ArrayList<>();          
+            pazientiInCoda.add(pazienteInCoda1);
+            pazientiInCoda.add(pazienteInCoda2);
+        }
+    	
+    	pazientiInCoda.sort((p1, p2) -> Integer.compare(p1.getCodiceColore().getPriorita(), p2.getCodiceColore().getPriorita()));
+    	
     }
     
 
@@ -61,13 +106,6 @@ public class PresaInCarico {
         return vbox;
     }
 
-    private void populateListView() {
-        ObservableList<PazienteItem> pazienti = FXCollections.observableArrayList();
-        // Populate with sample data or real data from the model
-        pazienti.add(new PazienteItem("Martino", "Manaresi", "A131", "Tac", "yellow"));
-        pazienti.add(new PazienteItem("Federico", "Hrvatin", "B408", "Lastra", "green"));
-        pazientiListView.setItems(pazienti);
-    }
     
     private void initializeListView(VBox visitsBox, Stage stage) {
         List<HBoxPazienteInCoda> list = new ArrayList<>();
@@ -75,6 +113,8 @@ public class PresaInCarico {
 //        List<PazienteInCoda> pazienti = medico.pazientiInCoda;
 //        pazienti.sort((p1, p2) -> Integer.compare(p1.getCodiceColore().getPriorita(), p2.getCodiceColore().getPriorita()));
         for (PazienteInCoda p : medico.pazientiInCoda) {
+        	System.out.println("Pazienti in coda");
+        	System.out.println(p);
             list.add(new HBoxPazienteInCoda(p, this.medico, this.scenes, stage));
         }
 

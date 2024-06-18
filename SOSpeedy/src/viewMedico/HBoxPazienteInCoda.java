@@ -72,8 +72,10 @@ public class HBoxPazienteInCoda extends HBox {
     		}
         	// ....
         	
+//        	System.out.println(pazienteInCoda);
             if (this.pazienteInCoda != null) {
                 // Passa alla scena delle informazioni del paziente
+            	this.medico.p = this.pazienteInCoda;
                 GestioneVisita gestione = new GestioneVisita(this.medico, this.scenes, this.stage, this.pazienteInCoda);
                 this.stage.setScene(gestione.getScene());
             }

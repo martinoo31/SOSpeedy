@@ -29,26 +29,36 @@ public class AssegnaVisita {
     private Stage stage;
     private List<Visita> visite;
     private Medico m;
+    private Admin a;
 
     public AssegnaVisita(Map<String, Scene> scenes, Stage stage, Paziente p, Medico m) {
         this.scenes = scenes;
         this.stage = stage;
         this.p = p;
-        this.scena = new Scene(this.createContent(), 300, 400);
         this.m = m;
+        this.a = new Admin();
         
         try {
     		ObjectInputStream visiteStream = new ObjectInputStream(new FileInputStream("visite.bin"));
     		 visite = (List<Visita>) visiteStream.readObject();
     		 visiteStream.close();
     	}catch(Exception e) {
-    		e.printStackTrace();
-//    		visite = new ArrayList<>();
-//    		Visita visita = new Visita("temp1");
-//    		Visita visita2 = new Visita("temp2");
-//    		visite.add(visita);
-//    		visite.add(visita2);
+    		System.out.println("Errore Lettura Visite");
+    		visite = new ArrayList<>();
+    		Visita visita = new Visita("temp1");
+    		Visita visita2 = new Visita("temp2");
+    		visite.add(visita);
+    		visite.add(visita2);
     	}
+    	if(this.visite == null || this.visite.size()<2) {
+    		
+    		Visita visita = new Visita("temp3");
+    		Visita visita2 = new Visita("temp4");
+    		visite.add(visita);
+    		visite.add(visita2);
+    	}
+    	
+        this.scena = new Scene(this.createContent(), 300, 400);
         
     }
 
@@ -94,7 +104,7 @@ public class AssegnaVisita {
 
     private void initializeListView(VBox visitsBox) {
         List<HBoxVisita> list = new ArrayList<>();
-        for (Visita visita : visite) {
+        for (Visita visita : a.visite) {
             list.add(new HBoxVisita(visita, this.scenes, this.stage, this.m));
         }
 
@@ -113,7 +123,7 @@ public class AssegnaVisita {
 
     private void updateListView(ObservableList<HBoxVisita> observableListVisite) {
         observableListVisite.clear();
-        for (Visita visita : visite) {
+        for (Visita visita : a.visite) {
             observableListVisite.add(new HBoxVisita(visita, this.scenes, this.stage, this.m));
         }
     }

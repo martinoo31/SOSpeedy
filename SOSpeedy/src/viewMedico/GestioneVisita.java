@@ -43,7 +43,7 @@ public class GestioneVisita {
         this.medico = medico;
         this.scenes = scenes;
         this.stage = stage;
-        this.p = new Paziente(p);
+        this.p = this.medico.p;
         this.scena = new Scene(this.createContent(), 300, 400);
     }
 
@@ -84,16 +84,17 @@ public class GestioneVisita {
         // ma la visita come e' collegata col paziente??
         Label l2=new Label(p.getNome() + " " + p.getCognome() + ", " + p.getCodiceFiscale());
 //        l2.setStyle("-fx-font-weight: bold;");
-        Button info = new Button("Informazioni");
+        Button info = new Button("Info");
         info.setOnAction(e -> showAlert());
+        info.setAlignment(Pos.CENTER_LEFT);
         inputGrid.addRow(0, l1, l2, info);
 
         // Row 2
         Label l3=new Label("Visita:");
         l3.setStyle("-fx-font-weight: bold;");
-//        Label l4=new Label("Codice fiscale:");
+        Label l4=new Label(p.getVisita().toString());
 //        l4.setStyle("-fx-font-weight: bold;");
-        inputGrid.addRow(1, l3);
+        inputGrid.addRow(1, l3, l4);
 
         // ColoreBox
         HBox coloreBox = new HBox(10);
@@ -114,7 +115,7 @@ public class GestioneVisita {
         yellowButton.setToggleGroup(codiceColoreGroup);
         redButton.setToggleGroup(codiceColoreGroup);
         
-        switch (p.getCodiceColore()) {
+        switch (this.medico.p.getCodiceColore()) {
         case BIANCO:
             whiteButton.setSelected(true);
             break;
@@ -260,8 +261,35 @@ public class GestioneVisita {
     }
     
     private void assegna(ActionEvent event) {
-    	AssegnaVisita assegna = new AssegnaVisita(this.scenes, this.stage, this.p, this.medico);
-        this.stage.setScene(assegna.getScene());
+    	RadioButton selectedRadioButton = (RadioButton) codiceColoreGroup.getSelectedToggle();
+    	String selectedColor = this.medico.p.getCodiceColore().toString();
+        if (selectedRadioButton != null) {
+            selectedColor = selectedRadioButton.getText();
+            System.out.println("Selected color: " + selectedColor);
+        } else {
+            System.out.println("No color selected.");
+        }
+        CodiceColore colore = this.medico.p.getCodiceColore();
+        switch (selectedColor) {
+        case "bianco":
+            colore = CodiceColore.BIANCO;
+            break;
+        case "verde":
+            colore = CodiceColore.VERDE;
+            break;
+        case "azzurro":
+            colore = CodiceColore.AZZURRO;
+            break;
+        case "arancione":
+            colore = CodiceColore.ARANCIONE;
+            break;
+        case "rosso":
+            colore = CodiceColore.ROSSO;
+            break;
+        }
+        
+    	this.medico.p.setCodiceColore(colore);
+    	this.stage.setScene(new Scene(new AssegnaVisita(scenes, stage, p, medico).createContent()));
     }
     
     private void deregistra(ActionEvent event) {
@@ -277,7 +305,7 @@ public class GestioneVisita {
 			ex.printStackTrace();
 		}
         
-    	this.stage.setScene(scenes.get("home"));
+    	this.stage.setScene(new Scene(new PresaInCarico(scenes, stage).createContent()));
     }
     
     public Scene getScene() {

@@ -20,10 +20,9 @@ public class Medico {
     public List<PazienteInCoda> pazientiInCoda;
     public ObservableList<PazienteInCoda> oPazientiInCoda;
     public Set<String> IDs;
+    public Paziente p;
     
-    public Paziente p = new Paziente();
-    
-    private String generateIdentificativoPaziente() {
+    public String generateIdentificativoPaziente() {
         Random random = new Random();
         String randomString = "";
         do {
@@ -48,7 +47,6 @@ public class Medico {
     public Medico() {
     	this.IDs=new HashSet<>();
     	
-    	this.p = null;
     	
     	Paziente paziente1 = new Paziente(1,"Federico",
     			"Hrvatin","HRVFRC02R19A944W", 
@@ -148,7 +146,7 @@ public class Medico {
     
     
     public void prendiInCarico(PazienteInCoda pInCoda) {
-    	p = new Paziente(pInCoda);
+    	p = pInCoda;
     	System.out.println(p);
     	// forse devo aggiornare i file ... (togliere da pazientiInCoda.bin)
     	

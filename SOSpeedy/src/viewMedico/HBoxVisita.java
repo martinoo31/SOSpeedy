@@ -57,7 +57,10 @@ public class HBoxVisita extends HBox {
     private void assegna(ActionEvent event) {
 //        this.admin.eliminaVisita(visita);
     	// salvataggio nei file di bin e riporto a presa in carico
-    	this.medico.pazientiInCoda.add(new PazienteInCoda(this.medico.p, LocalDateTime.now()));
+//    	this.medico.p.setVisita(visita);
+    	PazienteInCoda pInC = new PazienteInCoda(this.medico.p, LocalDateTime.now());
+    	pInC.setVisita(visita);
+    	this.medico.pazientiInCoda.add(pInC);
     	try (ObjectOutputStream pazientiInCodaStream = new ObjectOutputStream(new FileOutputStream("pazientiInCoda.bin"))) {
     		pazientiInCodaStream.writeObject(this.medico.pazientiInCoda);
     		System.out.println("Assegnata nuova visita, aggiungo paziente in coda");
@@ -66,7 +69,7 @@ public class HBoxVisita extends HBox {
 			ex.printStackTrace();
 		}
     	
-        this.stage.setScene(scenes.get("home"));
+    	this.stage.setScene(new Scene(new PresaInCarico(scenes, stage).createContent()));
     }
 
 //    private void modifica(ActionEvent event) {
