@@ -9,7 +9,10 @@ import javafx.collections.ObservableList;
 import java.io.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import model.*;
+import model.Medico;
+import model.Visita;
+import model.Turno;
+import model.TurnoEccezioni;
 
 public class Admin {
 
@@ -33,6 +36,14 @@ public class Admin {
     		visite.add(visita);
     		visite.add(visita2);
     	}
+    	if(this.visite.size()<2) {
+    		Visita visita = new Visita("temp1");
+    		Visita visita2 = new Visita("temp2");
+    		visite.add(visita);
+    		visite.add(visita2);
+    		visite.add(visita);
+    		visite.add(visita2);
+    	}
     	
     	try {
             ObjectInputStream mediciStream = new ObjectInputStream(new FileInputStream("medici.bin"));
@@ -45,6 +56,12 @@ public class Admin {
             medici.add(medico1);
             medici.add(medico2);
         }
+    	if(this.medici.size()<2) {
+    		Medico medico1 = new Medico(1,"Martino","Manaresi");
+            Medico medico2 = new Medico(2,"Francesco","Giordani");
+            medici.add(medico1);
+            medici.add(medico2);
+    	}
     	
     	try {
     		ObjectInputStream turniStream = new ObjectInputStream(new FileInputStream("turni.bin"));

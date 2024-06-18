@@ -1,4 +1,4 @@
-package view;
+package viewAdmin;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Turno;
+import viewAdmin.HBoxTurno;
 import controller.Admin;
 import java.util.*;
 
@@ -33,10 +34,16 @@ public class GestioneTurno {
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(15, 15, 15, 15));
 
+        
+        
         HBox topBox = new HBox();
-        Button backButton = new Button("Indietro");
+        topBox.setAlignment(Pos.CENTER_LEFT);
+        topBox.setSpacing(10);
+
+        Button backButton = new Button("←");
         backButton.setOnAction(this::goBack);
         Label titleLabel = new Label("Gestione Turni");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         topBox.getChildren().addAll(backButton, titleLabel);
 
         HBox inputBox = new HBox();

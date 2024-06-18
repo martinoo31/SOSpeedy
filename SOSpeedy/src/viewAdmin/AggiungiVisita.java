@@ -1,4 +1,4 @@
-package view;
+package viewAdmin;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -14,16 +14,14 @@ import controller.Admin;
 import java.util.*;
 import javafx.geometry.*;
 
-public class ModificaVisita {
+public class AggiungiVisita {
     public Admin admin;
     public Map<String, Scene> scenes;
     public TextField searchField;
-    public Visita visita;
 
-    public ModificaVisita(Admin admin, Map<String, Scene> scenes, Visita visita) {
+    public AggiungiVisita(Admin admin, Map<String, Scene> scenes) {
         this.admin = admin;
         this.scenes = scenes;
-        this.visita = visita;
     }
 
     public Parent createContent() {
@@ -38,7 +36,7 @@ public class ModificaVisita {
 
         Button backButton = new Button("←");
         backButton.setOnAction(this::goBack);
-        Label titleLabel = new Label("Modifica Visita");
+        Label titleLabel = new Label("Aggiungi Visita");
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         topBox.getChildren().addAll(backButton, titleLabel);
 
@@ -46,28 +44,26 @@ public class ModificaVisita {
         visitaBox.setAlignment(Pos.CENTER);
         visitaBox.setSpacing(10);
 
-        Label currentVisitaLabel = new Label("Visita: " + visita.getNomeVisita());
-        currentVisitaLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-        Label newVisitaLabel = new Label("Nuovo Nome Visita");
+        Label searchLabel = new Label("Nuova Visita");
+        searchLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         searchField = new TextField();
+        searchField.setPromptText("Nome Visita");
         searchField.setStyle("-fx-pref-width: 200px; -fx-border-color: black; -fx-border-width: 1;");
 
-        visitaBox.getChildren().addAll(currentVisitaLabel, newVisitaLabel, searchField);
+        visitaBox.getChildren().addAll(searchLabel, searchField);
 
-        Button modificaButton = new Button("Modifica Visita");
-        modificaButton.setStyle("-fx-background-color: #F0E68C;");
-        modificaButton.setOnAction(this::modificaVisita);
+        Button aggiungiButton = new Button("Aggiungi Visita");
+        aggiungiButton.setStyle("-fx-background-color: #8FBC8F;");
+        aggiungiButton.setOnAction(this::aggiungiVisita);
 
-        vbox.getChildren().addAll(topBox, visitaBox, modificaButton);
+        vbox.getChildren().addAll(topBox, visitaBox, aggiungiButton);
 
         return vbox;
     }
 
-    private void modificaVisita(ActionEvent event) {
+    private void aggiungiVisita(ActionEvent event) {
         String nomeVisita = searchField.getText();
-        this.visita.setNomeVisita(nomeVisita);
-        this.admin.modificaVisita(this.visita);
+        this.admin.add(new Visita(nomeVisita));
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.setScene(scenes.get("gestioneVisite"));

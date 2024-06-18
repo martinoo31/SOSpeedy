@@ -1,4 +1,4 @@
-package view;
+package viewAdmin;
 
 import controller.Admin;
 
@@ -41,7 +41,6 @@ public class  Home {
         gestioneVisiteButton.setOnAction(event -> {
             // Navigazione verso la schermata Gestione Visite
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            
             stage.setScene(scenes.get("gestioneVisite"));
         });
         

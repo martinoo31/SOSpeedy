@@ -1,4 +1,4 @@
-package view;
+package viewAdmin;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;

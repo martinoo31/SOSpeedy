@@ -1,10 +1,11 @@
-package view;
+package viewAdmin;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.Login;
 import javafx.geometry.*;
 import controller.Admin;
 import java.util.*;
@@ -17,6 +18,8 @@ public class Main extends Application {
         // Creazione dell'interfaccia Home
         Admin admin = new Admin();
         Map<String,Scene> scenes = new HashMap<String,Scene>();
+        Login login = new Login(scenes);
+        scenes.put("login",new Scene(login.createContent(),1200,900));
         Home home = new Home(admin, scenes);
         scenes.put("home", new Scene(home.createContent(),1200,900));
         GestioneVisite gestioneVisite = new GestioneVisite(admin,scenes,primaryStage);
@@ -31,7 +34,7 @@ public class Main extends Application {
 
 
         primaryStage.setTitle("Admin");
-        primaryStage.setScene(scenes.get("home"));
+        primaryStage.setScene(scenes.get("login"));
         primaryStage.show();
     }
 

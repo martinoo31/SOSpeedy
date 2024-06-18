@@ -1,4 +1,4 @@
-package viewInfermiere;
+package viewMedico;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -13,24 +13,26 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.PazienteInCoda;
 import model.Visita;
-import viewAdmin.HBoxVisita;
-import controller.Infermiere;
+//import view.HBoxVisita;
+import controller.Medico;
 import javafx.event.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DeregistraPaziente {
-    private Infermiere infermiere;
+public class PresaInCarico {
+    private Medico medico;
     private Map<String, Scene> scenes;
-    private TextField searchField;
+    private Stage stage;
     private ListView<PazienteItem> pazientiListView;
 
-    public DeregistraPaziente(Infermiere infermiere, Map<String, Scene> scenes) {
-        this.infermiere = infermiere;
+    public PresaInCarico(Map<String, Scene> scenes, Stage stage) {
+        this.medico = new Medico();
         this.scenes = scenes;
+        this.stage = stage;
     }
+    
 
     public Parent createContent() {
         VBox vbox = new VBox(10);
@@ -42,53 +44,21 @@ public class DeregistraPaziente {
         topBox.setAlignment(Pos.CENTER_LEFT);
         topBox.setPadding(new Insets(0,0,20,0));
         
-        Button backButton = new Button("←");
-        backButton.setAlignment(Pos.CENTER_LEFT);
-        backButton.setOnAction(this::goBack);
-        Label titleLabel = new Label("Deregistra Paziente");
+        Label titleLabel = new Label("Presa in carico");
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-        topBox.getChildren().addAll(backButton, titleLabel);
-
-        // Search field
-        HBox searchBox = new HBox(10);
-        searchBox.setAlignment(Pos.CENTER_LEFT);
-        searchField = new TextField();
-        searchField.setPromptText("Ricerca paziente");
-        
-        Button searchButton = new Button("🔍");
-        searchButton.setOnAction(this::searchPaziente);
-        Label l2=new Label("Ricerca paziente:");
-        l2.setStyle("-fx-font-weight: bold;");
-        searchBox.getChildren().addAll(l2, searchField, searchButton);
+        topBox.getChildren().addAll(/*backButton,*/ titleLabel);
 
         // ListView for patients
         VBox pazientiBox = new VBox();
-        initializeListView(pazientiBox);
+        initializeListView(pazientiBox, stage);
         
-        Label l1=new Label("Elenco dei pazienti:");
+        Label l1=new Label("Coda dei pazienti in ordine di priorità:");
         l1.setPadding(new Insets(20,0,0,0));
         l1.setStyle("-fx-font-weight: bold;");
-        vbox.getChildren().addAll(topBox, searchBox, l1, pazientiBox);
+        vbox.getChildren().addAll(topBox, l1, pazientiBox);
 
         return vbox;
-    }
-
-    private void goBack(ActionEvent event) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(scenes.get("home"));
-    }
-
-    private void searchPaziente(ActionEvent event) {
-        String searchText = searchField.getText().toLowerCase();
-        ObservableList<PazienteItem> filteredList = FXCollections.observableArrayList();
-        for (PazienteItem item : pazientiListView.getItems()) {
-            if (item.getNome().toLowerCase().contains(searchText) || 
-                item.getCognome().toLowerCase().contains(searchText)) {
-                filteredList.add(item);
-            }
-        }
-        pazientiListView.setItems(filteredList);
     }
 
     private void populateListView() {
@@ -99,17 +69,20 @@ public class DeregistraPaziente {
         pazientiListView.setItems(pazienti);
     }
     
-    private void initializeListView(VBox visitsBox) {
+    private void initializeListView(VBox visitsBox, Stage stage) {
         List<HBoxPazienteInCoda> list = new ArrayList<>();
-        for (PazienteInCoda p : infermiere.pazientiInCoda) {
-            list.add(new HBoxPazienteInCoda(p, this.infermiere, this.scenes));
+        // L'ordinamento della lista per codiceColore l'ho inserito direttamente nel costruttore del medico
+//        List<PazienteInCoda> pazienti = medico.pazientiInCoda;
+//        pazienti.sort((p1, p2) -> Integer.compare(p1.getCodiceColore().getPriorita(), p2.getCodiceColore().getPriorita()));
+        for (PazienteInCoda p : medico.pazientiInCoda) {
+            list.add(new HBoxPazienteInCoda(p, this.medico, this.scenes, stage));
         }
 
         ObservableList<HBoxPazienteInCoda> observableListVisite = FXCollections.observableList(list);
         ListView<HBoxPazienteInCoda> listView = new ListView<>(observableListVisite);
         visitsBox.getChildren().add(listView);
 
-        infermiere.oPazientiInCoda.addListener((ListChangeListener<PazienteInCoda>) c -> {
+        medico.oPazientiInCoda.addListener((ListChangeListener<PazienteInCoda>) c -> {
             while (c.next()) {
                 if (c.wasAdded() || c.wasRemoved()) {
                     updateListView(observableListVisite);
@@ -120,9 +93,13 @@ public class DeregistraPaziente {
 
     private void updateListView(ObservableList<HBoxPazienteInCoda> observableListVisite) {
         observableListVisite.clear();
-        for (PazienteInCoda p : infermiere.pazientiInCoda) {
-            observableListVisite.add(new HBoxPazienteInCoda(p, this.infermiere, this.scenes));
+        for (PazienteInCoda p : medico.pazientiInCoda) {
+            observableListVisite.add(new HBoxPazienteInCoda(p, this.medico, this.scenes, this.stage));
         }
+    }
+    
+    public Scene getScene() {
+        return this.scenes.get("presaInCarico");
     }
 
     public static class PazienteItem extends HBox {
@@ -148,11 +125,12 @@ public class DeregistraPaziente {
             codiceLabel.setStyle("-fx-background-color: " + coloreCodice + "; -fx-padding: 2px 4px;");
             Label tipoVisitaLabel = new Label(tipoVisita);
             Button infoButton = new Button("i");
-            Button deregistraButton = new Button("Deregistra");
-            deregistraButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-            deregistraButton.setOnAction(event -> deregistraPaziente());
+            // non ho capito a cosa serve questo button se lo mettiamo anche in HBoxPazienteInCoda
+            Button prendiButton = new Button("Prendi In Carico");
+            prendiButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+            prendiButton.setOnAction(event -> deregistraPaziente());
 
-            this.getChildren().addAll(nomeLabel, codiceLabel, tipoVisitaLabel, infoButton, deregistraButton);
+            this.getChildren().addAll(nomeLabel, codiceLabel, tipoVisitaLabel, infoButton, prendiButton);
         }
 
         private void deregistraPaziente() {

@@ -3,6 +3,7 @@ package viewInfermiere;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import view.Login;
 import controller.Infermiere;
 import java.util.*;
 
@@ -17,6 +18,9 @@ public class Main extends Application {
         
     	Home home = new Home(infermiere, scenes);
     	scenes.put("home", new Scene(home.createContent(), 800, 450));
+    	
+    	Login login = new Login(scenes);
+        scenes.put("login",new Scene(login.createContent(),800,450));
    
     	RegistraPaziente regPaziente = new RegistraPaziente(infermiere,scenes);
         scenes.put("registraPaziente", new Scene(regPaziente.createContent(),800,500));
@@ -25,7 +29,7 @@ public class Main extends Application {
         scenes.put("deregistraPaziente", new Scene(deregistraPaziente.createContent(), 800, 450));
    
         primaryStage.setTitle("Infermiere");
-        primaryStage.setScene(scenes.get("home"));
+        primaryStage.setScene(scenes.get("login"));
         primaryStage.show();
        
     }

@@ -1,4 +1,4 @@
-package view;
+package viewAdmin;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;

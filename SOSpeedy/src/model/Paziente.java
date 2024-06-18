@@ -24,10 +24,7 @@ public class Paziente implements Comparable, Serializable{
         this.cognome = "";
         this.codiceFiscale = "";
     }
-
-    
-
-    public Paziente(int idPaziente, String nome, String cognome, String codiceFiscale, String codiceIdentificativo,
+	public Paziente(int idPaziente, String nome, String cognome, String codiceFiscale, String codiceIdentificativo,
 			String indirizzo, LocalDate dataNascita, String descrizione, CodiceColore codiceColore) {
 		super();
 		this.idPaziente = idPaziente;
@@ -40,6 +37,19 @@ public class Paziente implements Comparable, Serializable{
 		this.descrizione = descrizione;
 		this.codiceColore = codiceColore;
 	}
+    
+    public Paziente(PazienteInCoda pInC) {
+    	super();
+    	this.idPaziente = pInC.getIdPaziente();
+    	this.nome = pInC.getNome();
+    	this.cognome = pInC.getCognome();
+    	this.codiceFiscale = pInC.getCodiceFiscale();
+    	this.codiceIdentificativo = pInC.getCodiceIdentificativo();
+    	this.indirizzo = pInC.getIndirizzo();
+    	this.dataNascita = pInC.getDataNascita();
+    	this.descrizione = pInC.getDescrizione();
+    	this.codiceColore = pInC.getCodiceColore();
+    }
     
 
 	public int getIdPaziente() {
@@ -69,7 +79,6 @@ public class Paziente implements Comparable, Serializable{
 	public String getCognome() {
 		return cognome;
 	}
-
 
 
 	public void setCognome(String cognome) {
@@ -181,6 +190,5 @@ public class Paziente implements Comparable, Serializable{
         Paziente p = (Paziente) o;
         return this.codiceColore.compareTo(p.codiceColore);
     }
-	
-	
 }
+
