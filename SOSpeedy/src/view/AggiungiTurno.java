@@ -105,6 +105,8 @@ public class AggiungiTurno {
     }
 
     private void saveTurno(ActionEvent event) {
+    	if(this.medicoComboBox.getValue() == null || this.visitaComboBox.getValue() == null)
+    		return;
         	var listaPeriodi = this.progSettimana.getListPeriodo();
         	var estremi = this.progSettimana.getEstremi();
         	var eccezioni = this.progGiornata.getListEccezioni();
@@ -112,6 +114,8 @@ public class AggiungiTurno {
         			LocalDateTime.of(estremi[1], LocalTime.MIDNIGHT),eccezioni,listaPeriodi,
         			this.medicoComboBox.getValue(),this.visitaComboBox.getValue());
         	this.admin.aggiungiTurno(turnoDaAggiungere);
+        	Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setScene(scenes.get("gestioneTurni"));
     }
 
     private void goBack(ActionEvent event) {
