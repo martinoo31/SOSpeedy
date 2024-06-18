@@ -15,7 +15,6 @@ public class Paziente implements Comparable, Serializable{
     private String descrizione;
     private CodiceColore codiceColore;
     private Visita visita;
-    
 
     
     public Visita getVisita() {
@@ -30,6 +29,7 @@ public class Paziente implements Comparable, Serializable{
 	
 	
 	
+
 	public Paziente() {
         this.idPaziente = -1;
         this.codiceIdentificativo = "";
