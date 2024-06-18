@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.geometry.*;
 import controller.Admin;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class Main extends Application {
 
@@ -24,6 +25,9 @@ public class Main extends Application {
         scenes.put("aggiungiVisite", new Scene(aggVisita.createContent(),1200,900));
         GestioneTurno gestTurno = new GestioneTurno(admin,scenes,primaryStage);
         scenes.put("gestioneTurni", new Scene(gestTurno.createContent(),1200,900));
+        for(Entry<String,Scene> e: scenes.entrySet()) {
+        	e.getValue().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        }
 
 
         primaryStage.setTitle("Admin");

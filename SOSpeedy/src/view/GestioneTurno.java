@@ -47,7 +47,7 @@ public class GestioneTurno {
         giornoSettimanaComboBox = new ComboBox<>(FXCollections.observableArrayList("Tutti", "Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato", "Domenica"));
         giornoSettimanaComboBox.getSelectionModel().selectFirst();
         inputBox.getChildren().addAll(new Label("Nome Medico:"), medicoField, new Label("Nome Visita:"), visitaField, new Label("Giorno della Settimana:"), giornoSettimanaComboBox);
-
+        inputBox.setSpacing(10);
         VBox turniBox = new VBox();
         initializeListView(turniBox);
 
@@ -55,6 +55,7 @@ public class GestioneTurno {
         addButton.setOnAction(this::aggiungiTurno);
 
         vbox.getChildren().addAll(topBox, inputBox, turniBox, addButton);
+        vbox.setSpacing(5);
 
         return vbox;
     }

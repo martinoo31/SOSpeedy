@@ -29,8 +29,6 @@ public class AggiungiTurno {
     public Map<String, Scene> scenes;
     public ComboBox<Medico> medicoComboBox;
     public ComboBox<Visita> visitaComboBox;
-    public TextField startTimeField;
-    public TextField endTimeField;
     public TextField startDateField;
     public TextField endDateField;
     public HBox dateBox;
@@ -48,6 +46,7 @@ public class AggiungiTurno {
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPadding(new Insets(15, 15, 15, 15));
         vbox.setSpacing(20);
+        vbox.setStyle("-fx-background-color: #ffffff;");  // Use a light background color
 
         HBox topBox = new HBox();
         topBox.setAlignment(Pos.CENTER_LEFT);
@@ -58,18 +57,37 @@ public class AggiungiTurno {
         Label titleLabel = new Label("Aggiungi Turno");
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         topBox.getChildren().addAll(backButton, titleLabel);
+        
+        
 
         VBox formBox = new VBox();
         formBox.setAlignment(Pos.CENTER);
         formBox.setSpacing(10);
-
+        
+        VBox medicoBox = new VBox();
+        medicoBox.setAlignment(Pos.CENTER);
+        medicoBox.setSpacing(10);
         Label medicoLabel = new Label("Medico:");
         medicoLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         medicoComboBox = new ComboBox<>(admin.oMedici);
-
+        medicoBox.getChildren().addAll(medicoLabel,medicoComboBox);
+        
+        
+        VBox visitaBox = new VBox();
+        visitaBox.setSpacing(10);
         Label visitaLabel = new Label("Visita:");
         visitaLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         visitaComboBox = new ComboBox<>(admin.oVisite);
+        visitaBox.getChildren().addAll(visitaLabel,visitaComboBox);
+        
+        HBox topBucket = new HBox();
+        topBucket.getChildren().addAll(medicoBox,visitaBox);
+        topBucket.setAlignment(Pos.CENTER);
+        topBucket.setSpacing(20);
+        
+        String comboBoxStyle = "-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 5;";
+        medicoComboBox.setStyle(comboBoxStyle);
+        visitaComboBox.setStyle(comboBoxStyle);
 
         HBox schedulingBox = new HBox();
         schedulingBox.setAlignment(Pos.CENTER);
@@ -82,7 +100,11 @@ public class AggiungiTurno {
         Button dailyButton = new Button("Programmazione Giornaliera");
         dailyButton.setStyle("-fx-background-color: #F0E68C;");
         dailyButton.setOnAction(this::cambiaProgGiornaliera);
-
+        
+        String buttonStyle = "-fx-background-color: #f0e68c; -fx-border-color: #000000; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 5 10 5 10;";
+        weeklyButton.setStyle(buttonStyle);
+        dailyButton.setStyle(buttonStyle);
+        
         schedulingBox.getChildren().addAll(weeklyButton, dailyButton);
 
         dateBox = new HBox();
@@ -93,13 +115,18 @@ public class AggiungiTurno {
 
         Button saveButton = new Button("Salva Turno");
         saveButton.setOnAction(this::saveTurno);
+        saveButton.setStyle(buttonStyle);
+
 
         HBox bottomBox = new HBox();
         bottomBox.setAlignment(Pos.CENTER);
         bottomBox.setSpacing(10);
         bottomBox.getChildren().add(saveButton);
+        
+        
+        vbox.getChildren().addAll(topBox, topBucket, schedulingBox, new HBox(), dateBox, bottomBox);
+        saveButton.setStyle(buttonStyle);
 
-        vbox.getChildren().addAll(topBox, medicoLabel, medicoComboBox, visitaLabel, visitaComboBox, schedulingBox, new HBox(), dateBox, bottomBox);
 
         return vbox;
     }

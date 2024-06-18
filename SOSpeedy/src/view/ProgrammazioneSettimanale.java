@@ -41,6 +41,7 @@ public class ProgrammazioneSettimanale {
 		}
 		this.listaPeriodi = new ArrayList<>();
 		creaParente();
+		this.contenuto.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 	}
 
     public Parent createContent() {
@@ -96,10 +97,11 @@ public class ProgrammazioneSettimanale {
         addPeriodButton.setOnAction(this::aggiungiPeriodo);
         
         VBox tastiPeriodo = new VBox();
+        tastiPeriodo.setSpacing(10);
         tastiPeriodo.getChildren().addAll(saveButton,removeButton,addPeriodButton);
         
         progSettimanaleAlta.getChildren().addAll(scegliGiorno,periodi,tastiPeriodo);
-
+        progSettimanaleAlta.setSpacing(10);
         TextField endTimeField1 = new TextField();
         endTimeField1.setPromptText("19:00");
 
@@ -122,7 +124,7 @@ public class ProgrammazioneSettimanale {
         dayCheckBoxBox.setSpacing(10);
         
         HBox progSettimanaleSotto = new HBox();
-        progSettimanaleSotto.getChildren().addAll(dayCheckBoxBox,dateBox);
+        progSettimanaleSotto.getChildren().add(dateBox);
 
         for (int i = 0; i < 7; i++) {
         	String giorno = switch(i) {
