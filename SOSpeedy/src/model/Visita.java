@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import Beans.Paziente;
+
 
 public class Visita implements Serializable{
     private int idVisita;

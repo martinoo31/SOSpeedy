@@ -26,8 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-
-import Beans.*;
+import model.*;
 
 
 public class TempoAttesa extends HttpServlet{
@@ -39,6 +38,12 @@ public class TempoAttesa extends HttpServlet{
 	{
 		super.init(conf);
 		g = new Gson();
+		
+		this.getServletContext().setAttribute("rosso", 2);
+		this.getServletContext().setAttribute("arancione", 15);
+		this.getServletContext().setAttribute("azzurro", 30);
+		this.getServletContext().setAttribute("verde", 45);
+		this.getServletContext().setAttribute("bianco", 60);
 		
 		
 		//inserimento di prova di alcuni pazienti nel file dei pazienti (DA ELIMINARE PERCHE LEGGERO DAL FILE DEL MART)
@@ -99,26 +104,45 @@ public class TempoAttesa extends HttpServlet{
 		
 		try {
 			
-			ObjectInputStream ois=new ObjectInputStream(new FileInputStream("pazienti.bin"));
-			List<Paziente> pazienti=(List<Paziente>) ois.readObject();
-			ois.close();
+			ObjectInputStream ois=new ObjectInputStream(new FileInputStream("pazientiInCoda.bin"));
+			List<PazienteInCoda> pazientiInCoda=(List<PazienteInCoda>) ois.readObject();
 			
-			for(Paziente p:pazienti) {
+			for(PazienteInCoda p:pazientiInCoda) {
 				if(p.getCodiceIdentificativo().equals(codiceIdentificativo)) {
 					if(p.getCodiceColore().equals(CodiceColore.ROSSO)) {
-						risposta="Tempo stimato 2 minuti";
+						int tempo=(int)this.getServletContext().getAttribute("rosso")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
+						risposta="Tempo stimato "+tempo+" minuti";
+						if(tempo<0) {
+							risposta="Dovrebbe già essere il tuo turno :(";
+						}
 					}
 					if(p.getCodiceColore().equals(CodiceColore.ARANCIONE)) {
-						risposta="Tempo stimato 12 minuti";
+						int tempo=(int)this.getServletContext().getAttribute("arancione")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
+						risposta="Tempo stimato "+tempo+" minuti";
+						if(tempo<0) {
+							risposta="Dovrebbe già essere il tuo turno :(";
+						}
 					}
 					if(p.getCodiceColore().equals(CodiceColore.AZZURRO)) {
-						risposta="Tempo stimato 22 minuti";
+						int tempo=(int)this.getServletContext().getAttribute("azzurro")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
+						risposta="Tempo stimato "+tempo+" minuti";
+						if(tempo<0) {
+							risposta="Dovrebbe già essere il tuo turno :(";
+						}
 					}
 					if(p.getCodiceColore().equals(CodiceColore.VERDE)) {
-						risposta="Tempo stimato 1 ora e 22 minuti";
+						int tempo=(int)this.getServletContext().getAttribute("verde")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
+						risposta="Tempo stimato "+tempo+" minuti";
+						if(tempo<0) {
+							risposta="Dovrebbe già essere il tuo turno :(";
+						}
 					}
 					if(p.getCodiceColore().equals(CodiceColore.BIANCO)) {
-						risposta="Tempo stimato 3 ore e 40 minuti";
+						int tempo=(int)this.getServletContext().getAttribute("bianco")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
+						risposta="Tempo stimato "+tempo+" minuti";
+						if(tempo<0) {
+							risposta="Dovrebbe già essere il tuo turno :(";
+						}
 					}
 				}
 			}

@@ -19,16 +19,7 @@
 	
     <!-- Define servlets that are included in the application 
     lascio una servlet come esempio-->
-	<servlet>
-        <servlet-name>LogIn</servlet-name>
-        <servlet-class>Servlet.LogIn</servlet-class>
-       
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogIn</servlet-name>
-        <url-pattern>/LogIn</url-pattern>
-    </servlet-mapping>
-    
+	
     <servlet>
         <servlet-name>TempoAttesa</servlet-name>
         <servlet-class>Servlet.TempoAttesa</servlet-class>
