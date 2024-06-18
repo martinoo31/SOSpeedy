@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import Beans.Paziente;
 
 public class PazienteInCoda extends Paziente implements Serializable{
     private LocalDateTime inizioAttesa;
