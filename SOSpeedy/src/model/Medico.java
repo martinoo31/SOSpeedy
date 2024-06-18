@@ -1,12 +1,13 @@
 package model;
 
 import java.util.*;
+import java.io.Serializable;
 import java.time.*;
 
 
 
 
-public class Medico {
+public class Medico implements Serializable{
     private int idMedico;
     private String nome;
     private String cognome;

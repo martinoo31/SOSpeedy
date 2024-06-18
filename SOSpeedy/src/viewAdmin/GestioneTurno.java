@@ -31,7 +31,7 @@ public class GestioneTurno {
 
     public Parent createContent() {
         VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
+        vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPadding(new Insets(15, 15, 15, 15));
 
         
@@ -69,8 +69,8 @@ public class GestioneTurno {
 
     private void initializeListView(VBox turniBox) {
         List<HBoxTurno> list = new ArrayList<>();
-        for (Turno turno : admin.turni) {
-            list.add(new HBoxTurno(turno, this.admin, this.scenes));
+        for (int i=0;i<admin.turni.size();i++) {
+            list.add(new HBoxTurno(admin.turni.get(i), this.admin, this.scenes));
         }
 
         ObservableList<HBoxTurno> observableListTurni = FXCollections.observableList(list);
@@ -101,6 +101,6 @@ public class GestioneTurno {
 
     private void aggiungiTurno(ActionEvent event) {
     	Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(new AggiungiTurno(this.admin,this.scenes).createContent(),1200,900));
+        stage.setScene(new Scene(new AggiungiTurno(this.admin,this.scenes).createContent(),800,450));
     }
 }

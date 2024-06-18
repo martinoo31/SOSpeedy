@@ -19,15 +19,15 @@ public class Main extends Application {
         Admin admin = new Admin();
         Map<String,Scene> scenes = new HashMap<String,Scene>();
         Login login = new Login(scenes);
-        scenes.put("login",new Scene(login.createContent(),1200,900));
+        scenes.put("login",new Scene(login.createContent(),800,450));
         Home home = new Home(admin, scenes);
-        scenes.put("home", new Scene(home.createContent(),1200,900));
+        scenes.put("home", new Scene(home.createContent(),800,450));
         GestioneVisite gestioneVisite = new GestioneVisite(admin,scenes,primaryStage);
-        scenes.put("gestioneVisite", new Scene(gestioneVisite.createContent(),1200,900));
+        scenes.put("gestioneVisite", new Scene(gestioneVisite.createContent(),800,450));
         AggiungiVisita aggVisita = new AggiungiVisita(admin,scenes);
-        scenes.put("aggiungiVisite", new Scene(aggVisita.createContent(),1200,900));
+        scenes.put("aggiungiVisite", new Scene(aggVisita.createContent(),800,450));
         GestioneTurno gestTurno = new GestioneTurno(admin,scenes,primaryStage);
-        scenes.put("gestioneTurni", new Scene(gestTurno.createContent(),1200,900));
+        scenes.put("gestioneTurni", new Scene(gestTurno.createContent(),800,450));
         for(Entry<String,Scene> e: scenes.entrySet()) {
         	e.getValue().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         }

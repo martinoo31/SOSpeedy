@@ -24,6 +24,7 @@ public class Login {
 	public GridPane createContent() {
     	// Create GridPane
         GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(10);
         grid.setHgap(10);

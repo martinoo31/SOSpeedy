@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.*;
 
-public class Turno {
+public class Turno implements Serializable{
     private int idTurno;
     private LocalDateTime inizioProgrammazione;
     private LocalDateTime fineProgrammazione;

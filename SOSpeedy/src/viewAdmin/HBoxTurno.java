@@ -29,7 +29,7 @@ public class HBoxTurno extends HBox {
         this.admin = admin;
         this.scenes = scenes;
 
-        Label nomeMedicoLabel = new Label(this.turno.getMedico().getNome());
+        Label nomeMedicoLabel = new Label(this.turno.getMedico().toString());
         Label nomeVisitaLabel = new Label(this.turno.getVisita().getNomeVisita());
 
         Region spacer = new Region();

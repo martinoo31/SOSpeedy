@@ -95,6 +95,6 @@ public class GestioneVisite {
     private void goAggiungiVisita(ActionEvent event) {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         AggiungiVisita aggVisita = new AggiungiVisita(admin, scenes);
-        stage.setScene(new Scene(aggVisita.createContent(), 400, 300));
+        stage.setScene(new Scene(aggVisita.createContent(), 800, 450));
     }
 }
