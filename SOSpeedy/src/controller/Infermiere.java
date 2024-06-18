@@ -69,7 +69,7 @@ public class Infermiere {
         }
     	
     	try {
-            ObjectInputStream pazientiInCodaStream = new ObjectInputStream(new FileInputStream("pazientiInCoda.bin"));
+            ObjectInputStream pazientiInCodaStream = new ObjectInputStream(new FileInputStream("C:\\Users\\ZBook 15\\OneDrive\\Desktop\\pazientiInCoda.bin"));
             pazientiInCoda = (List<PazienteInCoda>) pazientiInCodaStream.readObject();
             pazientiInCodaStream.close();
         } catch (Exception e) {
@@ -94,6 +94,7 @@ public class Infermiere {
     	String id=this.generateIdentificativoPaziente();
     	Paziente p= new Paziente(1,nome,cognome,codiceFiscale, id , 
     			"indirizzo fittizio", dataNascita, descrizione, codiceColore);
+    	p.setVisita(new Visita(0, "Visita generale",null));
     	this.oPazienti.add(p);
     	PazienteInCoda pInCoda=new PazienteInCoda(p, LocalDateTime.now());
     	this.oPazientiInCoda.add(pInCoda);
@@ -106,7 +107,7 @@ public class Infermiere {
 			e.printStackTrace();
 		}
     	
-    	try (ObjectOutputStream pazientiInCodaStream = new ObjectOutputStream(new FileOutputStream("pazientiInCoda.bin"))) {
+    	try (ObjectOutputStream pazientiInCodaStream = new ObjectOutputStream(new FileOutputStream("C:\\Users\\ZBook 15\\OneDrive\\Desktop\\pazientiInCoda.bin"))) {
     		pazientiInCodaStream.writeObject(this.pazientiInCoda);
     		System.out.println("Salvataggio registrazione paziente messo in coda in corso");
     		pazientiInCodaStream.close();
@@ -123,7 +124,7 @@ public class Infermiere {
     		this.oPazientiInCoda.remove(pInCoda);
     		this.oPazienti.remove(pInCoda);
     	}
-    	try (ObjectOutputStream pazientiInCodaStream = new ObjectOutputStream(new FileOutputStream("pazientiInCoda.bin"))) {
+    	try (ObjectOutputStream pazientiInCodaStream = new ObjectOutputStream(new FileOutputStream("C:\\Users\\ZBook 15\\OneDrive\\Desktop\\pazientiInCoda.bin"))) {
     		pazientiInCodaStream.writeObject(this.pazientiInCoda);
     		System.out.println("Salvataggio eliminazione dai pazienti in coda in corso");
     		pazientiInCodaStream.close();

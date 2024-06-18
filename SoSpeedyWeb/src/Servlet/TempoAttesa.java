@@ -104,46 +104,62 @@ public class TempoAttesa extends HttpServlet{
 		
 		try {
 			
-			ObjectInputStream ois=new ObjectInputStream(new FileInputStream("pazientiInCoda.bin"));
+			ObjectInputStream ois=new ObjectInputStream(new FileInputStream("C:\\Users\\ZBook 15\\OneDrive\\Desktop\\pazientiInCoda.bin"));
 			List<PazienteInCoda> pazientiInCoda=(List<PazienteInCoda>) ois.readObject();
+			ois.close();
 			
 			for(PazienteInCoda p:pazientiInCoda) {
 				if(p.getCodiceIdentificativo().equals(codiceIdentificativo)) {
-					if(p.getCodiceColore().equals(CodiceColore.ROSSO)) {
-						int tempo=(int)this.getServletContext().getAttribute("rosso")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
-						risposta="Tempo stimato "+tempo+" minuti";
-						if(tempo<0) {
-							risposta="Dovrebbe già essere il tuo turno :(";
+					
+					long tempoAtteso=(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)/60)-(p.getInizioAttesa().toEpochSecond(ZoneOffset.UTC)/60);
+					System.out.println("Per il paziente "+p.getCodiceIdentificativo()+" "+p.getCodiceColore()+" la diff è "+tempoAtteso);
+//					if(diff<0) {
+//						risposta="Dovrebbe già essere il tuo turno :(";
+//					}else {
+						
+						if(p.getCodiceColore().equals(CodiceColore.ROSSO)) {
+							
+							int tempo=(int)this.getServletContext().getAttribute("rosso");
+							System.out.println("Il tempo per questo colore è "+tempo);
+							if(tempo>tempoAtteso)
+							risposta="Tempo stimato "+(tempo-tempoAtteso)+" minuti";
+							else
+								risposta="Dovrebbe già essere il tuo turno :(";
+				
 						}
-					}
-					if(p.getCodiceColore().equals(CodiceColore.ARANCIONE)) {
-						int tempo=(int)this.getServletContext().getAttribute("arancione")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
-						risposta="Tempo stimato "+tempo+" minuti";
-						if(tempo<0) {
-							risposta="Dovrebbe già essere il tuo turno :(";
+						if(p.getCodiceColore().equals(CodiceColore.ARANCIONE)) {
+							int tempo=(int)this.getServletContext().getAttribute("arancione");
+							System.out.println("Il tempo per questo colore è "+tempo);
+							if(tempo>tempoAtteso)
+								risposta="Tempo stimato "+(tempo-tempoAtteso)+" minuti";
+							else
+								risposta="Dovrebbe già essere il tuo turno :(";
 						}
-					}
-					if(p.getCodiceColore().equals(CodiceColore.AZZURRO)) {
-						int tempo=(int)this.getServletContext().getAttribute("azzurro")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
-						risposta="Tempo stimato "+tempo+" minuti";
-						if(tempo<0) {
-							risposta="Dovrebbe già essere il tuo turno :(";
+						if(p.getCodiceColore().equals(CodiceColore.AZZURRO)) {
+							int tempo=(int)this.getServletContext().getAttribute("azzurro");
+							System.out.println("Il tempo per questo colore è "+tempo);
+							if(tempo>tempoAtteso)
+								risposta="Tempo stimato "+(tempo-tempoAtteso)+" minuti";
+							else
+								risposta="Dovrebbe già essere il tuo turno :(";
 						}
-					}
-					if(p.getCodiceColore().equals(CodiceColore.VERDE)) {
-						int tempo=(int)this.getServletContext().getAttribute("verde")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
-						risposta="Tempo stimato "+tempo+" minuti";
-						if(tempo<0) {
-							risposta="Dovrebbe già essere il tuo turno :(";
+						if(p.getCodiceColore().equals(CodiceColore.VERDE)) {
+							int tempo=(int)this.getServletContext().getAttribute("verde");
+							System.out.println("Il tempo per questo colore è "+tempo);
+							if(tempo>tempoAtteso)
+								risposta="Tempo stimato "+(tempo-tempoAtteso)+" minuti";
+							else
+								risposta="Dovrebbe già essere il tuo turno :(";
 						}
-					}
-					if(p.getCodiceColore().equals(CodiceColore.BIANCO)) {
-						int tempo=(int)this.getServletContext().getAttribute("bianco")-(LocalTime.now().getMinute()-p.getInizioAttesa().getMinute());
-						risposta="Tempo stimato "+tempo+" minuti";
-						if(tempo<0) {
-							risposta="Dovrebbe già essere il tuo turno :(";
+						if(p.getCodiceColore().equals(CodiceColore.BIANCO)) {
+							int tempo=(int)this.getServletContext().getAttribute("bianco");
+							System.out.println("Il tempo per questo colore è "+tempo);
+							if(tempo>tempoAtteso)
+								risposta="Tempo stimato "+(tempo-tempoAtteso)+" minuti";
+							else
+								risposta="Dovrebbe già essere il tuo turno :(";
 						}
-					}
+					//}
 				}
 			}
 			

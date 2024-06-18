@@ -14,9 +14,23 @@ public class Paziente implements Comparable, Serializable{
     private LocalDate dataNascita;
     private String descrizione;
     private CodiceColore codiceColore;
+    private Visita visita;
+    
     
 
-    public Paziente() {
+    public Visita getVisita() {
+		return visita;
+	}
+
+
+
+	public void setVisita(Visita visita) {
+		this.visita = visita;
+	}
+
+
+
+	public Paziente() {
         this.idPaziente = -1;
         this.codiceIdentificativo = "";
         this.codiceColore = CodiceColore.BIANCO;
