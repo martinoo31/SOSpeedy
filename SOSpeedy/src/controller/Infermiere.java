@@ -3,6 +3,7 @@ package controller;
 
 import java.util.*;
 
+import Beans.Paziente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
